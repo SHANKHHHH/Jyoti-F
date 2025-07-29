@@ -4,7 +4,6 @@ import logo from '../assets/Logo.png';
 const Footer = () => (
   <footer className="bg-[#2A2A2A] text-white pt-12 pb-4 px-4 w-full">
     <div className="max-w-[1240px] mx-auto flex flex-col gap-12">
-      {/* Main Section */}
       <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-8 lg:gap-16 justify-between">
         {/* Address & Contact */}
         <div className="flex flex-col gap-8 w-full md:w-[45%] lg:w-[287px]">
@@ -57,7 +56,6 @@ const Footer = () => (
           <a href="/blog" className="hover:text-amber-400 transition">Blog</a>
         </div>
       </div>
-
       {/* Copyright */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-neutral-700 pt-6 text-center">
         <span className="text-sm text-[#EFEFEF]">&copy; {new Date().getFullYear()} Jyoti Enterprises. All rights reserved.</span>
