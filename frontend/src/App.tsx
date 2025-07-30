@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
+const BookForAnEvent = lazy(() => import('./pages/homepage/BookForAnEvent'));
 const WhatOffer = lazy(() => import('./pages/homepage/WhatWeOffer'));
 const SignIn = lazy(() => import('./pages/SignInPage'));
 const SignUp = lazy(() => import('./pages/SignUpPage'));
@@ -27,6 +28,7 @@ function AppContent() {
                 <>
                   <Hero />
                   <AboutSection />
+                  <BookForAnEvent />
                   <WhatOffer />
                 </>
               }
