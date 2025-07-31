@@ -1,15 +1,18 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-
 import Header from './components/Header';
 import Footer from './components/Footer';
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
 const BookForAnEvent = lazy(() => import('./pages/homepage/BookForAnEvent'));
+const BackBookNow = lazy(() => import('./pages/homepage/BackBookNow'));
 const WhatOffer = lazy(() => import('./pages/homepage/WhatWeOffer'));
+
 const SignIn = lazy(() => import('./pages/SignInPage'));
 const SignUp = lazy(() => import('./pages/SignUpPage'));
+const ProductsPage = lazy(() => import('./pages/Products'));
+const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage')); // <-- ADD THIS LINE
 
 function AppContent() {
   const location = useLocation();
@@ -18,7 +21,6 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {!hideHeaderFooter && <Header />}
-
       <main className="flex-1">
         <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
           <Routes>
@@ -27,18 +29,20 @@ function AppContent() {
               element={
                 <>
                   <Hero />
+                  <BackBookNow />
                   <AboutSection />
                   <BookForAnEvent />
                   <WhatOffer />
                 </>
               }
             />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:id" element={<ProductDetailsPage />} /> {/* <-- THE NEW ROUTE */}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </Suspense>
       </main>
-
       {!hideHeaderFooter && <Footer />}
     </div>
   );

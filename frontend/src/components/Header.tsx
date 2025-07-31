@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Logo.png';
 
 const navItems = [
-  { label: "PRODUCTS", anchor: "products", icon: null },
+  { label: "PRODUCTS", anchor: "/products", icon: null },
   { label: "EN", anchor: "#", icon: ChevronDown },
   { label: "SIGN IN", anchor: "/signin", icon: User },
   { label: "CART", anchor: "cart", icon: ShoppingCart },
@@ -14,7 +14,7 @@ const navItems = [
 
 const mobileItems = [
   { label: 'HOME', anchor: 'home' },
-  { label: 'PRODUCTS', anchor: 'products' },
+  { label: 'PRODUCTS', anchor: '/products' }, // <-- changed here as well
   { label: 'ABOUT US', anchor: 'about' },
   { label: 'CONTACT US', anchor: 'contact' },
   { label: 'SIGN IN', anchor: '/signin' },
