@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext'; // <-- ADD
+import BookNow from './pages/Booking/BookNow'; // Adjust path as needed
+
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
@@ -16,6 +18,7 @@ const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
 const CartPage = lazy(() => import('./pages/Cart')); // <-- Name matches your 'cart.tsx'
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+// const IconSection = lazy(() => import('./pages/homepage/icon')); // <-- Import your IconSection
 
 function AppContent() {
   const location = useLocation();
@@ -32,6 +35,7 @@ function AppContent() {
               element={
                 <>
                   <Hero />
+                  {/* <IconSection /> */}
                   <BackBookNow />
                   <AboutSection />
                   <BookForAnEvent />
@@ -46,6 +50,7 @@ function AppContent() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/booknow" element={<BookNow />} />
           </Routes>
         </Suspense>
       </main>

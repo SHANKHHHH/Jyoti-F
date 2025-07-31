@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Search, User, ShoppingCart, ChevronDown } from 'lucide-react';
+import { Menu, X, Search, User, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Logo.png';
-import { useCart } from '../contexts/CartContext'; // <-- Import your cart context here
+import { useCart } from '../contexts/CartContext';
 
 const navItems = [
   { label: "PRODUCTS", anchor: "/products", icon: null },
-  { label: "EN", anchor: "#", icon: ChevronDown },
+  { label: "EN", anchor: "#", icon: null }, // icon is now handled below
   { label: "SIGN IN", anchor: "/signin", icon: User },
-  { label: "CART", anchor: "/cart", icon: ShoppingCart }, // anchor is '/cart'
+  { label: "CART", anchor: "/cart", icon: ShoppingCart },
   { label: "ABOUT", anchor: "/about", icon: null },
   { label: "CONTACT", anchor: "/contact", icon: null }
 ];
@@ -18,7 +18,7 @@ const mobileItems = [
   { label: 'PRODUCTS', anchor: '/products' },
   { label: 'ABOUT US', anchor: '/about' },
   { label: 'SIGN IN', anchor: '/signin' },
-  { label: 'CART', anchor: '/cart' }, // Add Cart to mobile menu for consistency
+  { label: 'CART', anchor: '/cart' },
   { label: 'CONTACT', anchor: '/contact' }
 ];
 
@@ -26,7 +26,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
-  const { cart } = useCart(); // <-- get cart items
+  const { cart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -76,7 +76,6 @@ const Header = () => {
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
             {navItems.map((item) => {
-              // Special case for Cart with item count badge
               if (item.label === "CART") {
                 return (
                   <button
@@ -96,6 +95,30 @@ const Header = () => {
                   </button>
                 );
               }
+              // Special rendering for EN (language) with SVG flag
+              if (item.label === "EN") {
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => handleNavClick(item.anchor)}
+                    className={`flex items-center gap-2 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                      scrolled ? 'text-gray-800' : 'text-white'
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {/* Inline SVG Indian Flag */}
+                    <span className="inline-block align-middle">
+                      <svg width="19" height="13" viewBox="0 0 19 13" fill="none">
+                        <rect width="19" height="4.3" y="0" fill="#FF9933"/>
+                        <rect width="19" height="4.3" y="4.3" fill="#fff"/>
+                        <rect width="19" height="4.3" y="8.6" fill="#138808"/>
+                        {/* Ashoka Chakra */}
+                        <circle cx="9.5" cy="6.5" r="1.0" fill="none" stroke="#000088" strokeWidth="1" />
+                      </svg>
+                    </span>
+                  </button>
+                );
+              }
               return (
                 <button
                   key={item.label}
@@ -106,7 +129,6 @@ const Header = () => {
                 >
                   {item.icon && <item.icon size={16} className="hidden lg:inline-block" />}
                   <span>{item.label}</span>
-                  {item.label === 'EN' && <ChevronDown size={16} />}
                 </button>
               );
             })}
@@ -139,15 +161,7 @@ const Header = () => {
                 scrolled ? 'text-gray-800' : 'text-white'
               }`}
             >
-              {item.label === "CART" &&
-                <ShoppingCart size={18} className="inline-block" />}
               {item.label}
-              {/* Badge for cart count */}
-              {item.label === "CART" && cart.length > 0 && (
-                <span className="ml-1 bg-red-500 text-xs rounded-full px-1.5 text-white">
-                  {cart.length}
-                </span>
-              )}
             </button>
           ))}
         </div>
