@@ -2,28 +2,31 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Search, User, ShoppingCart, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Logo.png';
+import { useCart } from '../contexts/CartContext'; // <-- Import your cart context here
 
 const navItems = [
   { label: "PRODUCTS", anchor: "/products", icon: null },
   { label: "EN", anchor: "#", icon: ChevronDown },
   { label: "SIGN IN", anchor: "/signin", icon: User },
-  { label: "CART", anchor: "cart", icon: ShoppingCart },
+  { label: "CART", anchor: "/cart", icon: ShoppingCart }, // anchor is '/cart'
   { label: "ABOUT", anchor: "about", icon: null },
   { label: "CONTACT", anchor: "contact", icon: null }
 ];
 
 const mobileItems = [
   { label: 'HOME', anchor: 'home' },
-  { label: 'PRODUCTS', anchor: '/products' }, // <-- changed here as well
+  { label: 'PRODUCTS', anchor: '/products' },
   { label: 'ABOUT US', anchor: 'about' },
   { label: 'CONTACT US', anchor: 'contact' },
   { label: 'SIGN IN', anchor: '/signin' },
+  { label: 'CART', anchor: '/cart' }, // Add Cart to mobile menu for consistency
 ];
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const { cart } = useCart(); // <-- get cart items
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -70,22 +73,43 @@ const Header = () => {
               className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
             />
           </div>
-
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNavClick(item.anchor)}
-                className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
-                  scrolled ? 'text-gray-800' : 'text-white'
-                }`}
-              >
-                {item.icon && <item.icon size={16} className="hidden lg:inline-block" />}
-                <span>{item.label}</span>
-                {item.label === 'EN' && <ChevronDown size={16} />}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              // Special case for Cart with item count badge
+              if (item.label === "CART") {
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => navigate(item.anchor)}
+                    className={`relative flex items-center gap-1 font-semibold text-sm transition-colors ${
+                      scrolled ? 'text-gray-800' : 'text-white'
+                    }`}
+                  >
+                    <ShoppingCart size={18} />
+                    <span>{item.label}</span>
+                    {cart.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1.5 text-white">
+                        {cart.length}
+                      </span>
+                    )}
+                  </button>
+                );
+              }
+              return (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavClick(item.anchor)}
+                  className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                    scrolled ? 'text-gray-800' : 'text-white'
+                  }`}
+                >
+                  {item.icon && <item.icon size={16} className="hidden lg:inline-block" />}
+                  <span>{item.label}</span>
+                  {item.label === 'EN' && <ChevronDown size={16} />}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
@@ -111,11 +135,19 @@ const Header = () => {
             <button
               key={item.anchor}
               onClick={() => handleNavClick(item.anchor)}
-              className={`text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
                 scrolled ? 'text-gray-800' : 'text-white'
               }`}
             >
+              {item.label === "CART" &&
+                <ShoppingCart size={18} className="inline-block" />}
               {item.label}
+              {/* Badge for cart count */}
+              {item.label === "CART" && cart.length > 0 && (
+                <span className="ml-1 bg-red-500 text-xs rounded-full px-1.5 text-white">
+                  {cart.length}
+                </span>
+              )}
             </button>
           ))}
         </div>

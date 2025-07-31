@@ -2,17 +2,18 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { CartProvider } from './contexts/CartContext'; // <-- ADD
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
 const BookForAnEvent = lazy(() => import('./pages/homepage/BookForAnEvent'));
 const BackBookNow = lazy(() => import('./pages/homepage/BackBookNow'));
 const WhatOffer = lazy(() => import('./pages/homepage/WhatWeOffer'));
-
 const SignIn = lazy(() => import('./pages/SignInPage'));
 const SignUp = lazy(() => import('./pages/SignUpPage'));
 const ProductsPage = lazy(() => import('./pages/Products'));
-const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage')); // <-- ADD THIS LINE
+const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
+const CartPage = lazy(() => import('./pages/Cart')); // <-- Name matches your 'cart.tsx'
 
 function AppContent() {
   const location = useLocation();
@@ -37,7 +38,8 @@ function AppContent() {
               }
             />
             <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:id" element={<ProductDetailsPage />} /> {/* <-- THE NEW ROUTE */}
+            <Route path="/products/:id" element={<ProductDetailsPage />} />
+            <Route path="/cart" element={<CartPage />} /> {/* <-- CART ROUTE */}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
@@ -51,7 +53,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
     </Router>
   );
 }
