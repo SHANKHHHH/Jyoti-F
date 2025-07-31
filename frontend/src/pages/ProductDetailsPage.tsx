@@ -64,7 +64,7 @@ const ProductDetailsPage: React.FC = () => {
       image: product.images[selectedImageIndex] || ProductImg,
       action,
       discount: product.discount,
-      quantity, // <-- This works, as CartContext is fixed!
+      //quantity, // <-- This works, as CartContext is fixed!
     });
     navigate("/cart");
   };
@@ -253,7 +253,7 @@ const ProductDetailsPage: React.FC = () => {
                           discount: recProduct.discount,
                           image: recProduct.image,
                           action: "buy",
-                          quantity: 1,
+                          //quantity: 1,
                         });
                         navigate("/cart");
                       }}
@@ -269,7 +269,7 @@ const ProductDetailsPage: React.FC = () => {
                           discount: recProduct.discount,
                           image: recProduct.image,
                           action: "rent",
-                          quantity: 1,
+                          //quantity: 1,
                         });
                         navigate("/cart");
                       }}

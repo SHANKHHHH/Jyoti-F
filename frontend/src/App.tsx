@@ -14,6 +14,7 @@ const SignUp = lazy(() => import('./pages/SignUpPage'));
 const ProductsPage = lazy(() => import('./pages/Products'));
 const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
 const CartPage = lazy(() => import('./pages/Cart')); // <-- Name matches your 'cart.tsx'
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -40,6 +41,7 @@ function AppContent() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartPage />} /> {/* <-- CART ROUTE */}
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
