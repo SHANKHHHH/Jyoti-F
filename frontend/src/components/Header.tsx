@@ -9,15 +9,14 @@ const navItems = [
   { label: "EN", anchor: "#", icon: ChevronDown },
   { label: "SIGN IN", anchor: "/signin", icon: User },
   { label: "CART", anchor: "/cart", icon: ShoppingCart }, // anchor is '/cart'
-  { label: "ABOUT", anchor: "about", icon: null },
+  { label: "ABOUT", anchor: "/about", icon: null },
   { label: "CONTACT", anchor: "/contact", icon: null }
 ];
 
 const mobileItems = [
   { label: 'HOME', anchor: 'home' },
   { label: 'PRODUCTS', anchor: '/products' },
-  { label: 'ABOUT US', anchor: 'about' },
-  { label: 'CONTACT US', anchor: 'contact' },
+  { label: 'ABOUT US', anchor: '/about' },
   { label: 'SIGN IN', anchor: '/signin' },
   { label: 'CART', anchor: '/cart' }, // Add Cart to mobile menu for consistency
   { label: 'CONTACT', anchor: '/contact' }

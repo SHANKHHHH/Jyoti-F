@@ -1,20 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import bgm from '../../assets/bgm.png';
 
-const bgImagePath = "'../assets/bgm.png";
 const BackBookNow: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleBookNow = () => {
-    // Replace with your booking logic or navigation
-    console.log('Book Now button clicked!');
-    // Example: navigate('/booking');  or openModal();
+    navigate('/products');
   };
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <img
-        src={bgImagePath}
+        src={bgm}
         alt="Booking Background"
         className="absolute inset-0 w-full h-full object-cover z-0"
+        draggable={false}
       />
 
       {/* Semi-transparent Overlay for readability */}
@@ -23,10 +25,10 @@ const BackBookNow: React.FC = () => {
       {/* Foreground Content Box */}
       <div className="relative z-20 flex flex-col items-center px-6 py-16 rounded-lg bg-white/75 backdrop-blur-md shadow-xl max-w-lg mx-auto">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-orange-500 mb-6 text-center tracking-tight">
-          Book Your Event Now
+          Bring a Premium and Hygiene Experience to Your Event
         </h1>
         <p className="text-gray-800 text-lg mb-10 text-center">
-          Secure your spot for an unforgettable experience! Click below to get started with your booking through <span className="font-bold text-emerald-600">BookForAnEvent</span>.
+          Secure your spot for an unforgettable experience! Click below to get started with your booking through <span className="font-bold text-emerald-600">BookNow</span>.
         </p>
         <button
           onClick={handleBookNow}
