@@ -1,11 +1,11 @@
 import { Flame } from 'lucide-react';
 
-import VVIP from '../assets/VVIP.jpg';
-import HOLI from '../assets/HOLI.jpg';
-import VVI from '../assets/VVI.png';
+import VVIP from '../../assets/VVIP.jpg';
+import HOLI from '../../assets/HOLI.jpg';
+import VVI from '../../assets/Desktop - 16.svg';
 // Replace these imports with actual images if you have them
-import WEDDINGS from '../assets/VVI.png'; // placeholder
-import SPORTS from '../assets/HOLI.jpg';  // placeholder
+import WEDDINGS from '../../assets/Desktop - 16.svg'; // placeholder
+import SPORTS from '../../assets/Desktop - 16.svg';  // placeholder
 
 const imagePaths = {
   "VVIP EVENTS": VVIP,
