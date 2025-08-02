@@ -1,103 +1,278 @@
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ProductImg from '../assets/Product.jpg'; // <-- Update if your image path is different
+import ProductImg from '../assets/Product.jpg'; // fallback for products with empty image
+import Men3Urinal from '../assets/3 MENS URINELS.png';
+import AirCooler from '../assets/AIR COOLER.png';
+import bio from '../assets/bio.png';
+import ABC from '../assets/ABC.jpeg.jpg';
+import ductac from '../assets/duct ac.jpeg.jpg';
+import uriens from '../assets/uriens 4in1.png';
+import ShowerCabin from '../assets/shower cabin.jpeg.jpg';
+import patioHeater from '../assets/patio heater.jpeg.jpg';
+import mistfan from '../assets/mist fan.jpeg.jpg'
+import AirWater from '../assets/AIRON  WATER.png';
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice: number;
+  rating: number;
+  reviews: number;
+  category: string;
+  discount: string;
+  description: string;
+  image: string;
+};
+
+const products: Product[] = [
+  // --- Example Products ---
+  {
+    id: 1,
+    name: 'PM Container',
+    price: 37489,
+    originalPrice: 45000,
+    rating: 4.5,
+    reviews: 23,
+    category: 'Containers',
+    discount: '10% off',
+    description: 'Versatile PM Container for all site needs.',
+    image: ProductImg,
+  },
+  {
+    id: 2,
+    name: 'PM Container',
+    price: 37489,
+    originalPrice: 45000,
+    rating: 4.5,
+    reviews: 23,
+    category: 'Portable Toilets',
+    discount: '15% off',
+    description: 'Sturdy portable container, perfect for any job site.',
+    image: ProductImg,
+  },
+  {
+    id: 3,
+    name: 'PM Container',
+    price: 37489,
+    originalPrice: 45000,
+    rating: 4.5,
+    reviews: 23,
+    category: 'Air Conditioners',
+    discount: '20% off',
+    description: 'Air-conditioned container for your comfort.',
+    image: ProductImg,
+  },
+  {
+    id: 4,
+    name: 'PM Container',
+    price: 37489,
+    originalPrice: 45000,
+    rating: 4.5,
+    reviews: 23,
+    category: 'Containers',
+    discount: '25% off',
+    description: 'Secure and mobile PM container unit.',
+    image: ProductImg,
+  },
+  {
+    id: 5,
+    name: 'PM Container',
+    price: 37489,
+    originalPrice: 45000,
+    rating: 4.5,
+    reviews: 23,
+    category: 'Portable Toilets',
+    discount: '30% off',
+    description: 'Reliable portable container with flexible rental/ownership.',
+    image: ProductImg,
+  },
+  // --- New Products ---
+  {
+    id: 6,
+    name: '3 Mens Urinals',
+    price: 33500,
+    originalPrice: 38000,
+    rating: 4.2,
+    reviews: 14,
+    category: 'Toilets',
+    discount: '12% off',
+    description: "Large urinal unit with 3-person capacity for event sites.",
+    image: Men3Urinal, // image left blank
+  },
+  {
+    id: 7,
+    name: '4 in 1 Urinals',
+    price: 39800,
+    originalPrice: 46500,
+    rating: 4.1,
+    reviews: 11,
+    category: 'Toilets',
+    discount: '15% off',
+    description: '4-in-1 design for efficient use at crowded events.',
+    image: uriens,
+  },
+  {
+    id: 8,
+    name: 'Fire Extinguisher',
+    price: 31000,
+    originalPrice: 35500,
+    rating: 4.7,
+    reviews: 31,
+    category: 'Fire Safety',
+    discount: '13% off',
+    description: 'Easy-to-use ABC fire extinguisher for emergencies.',
+    image: ABC,
+  },
+  {
+    id: 9,
+    name: 'Air Cooler',
+    price: 47000,
+    originalPrice: 52000,
+    rating: 4.6,
+    reviews: 22,
+    category: 'Coolers',
+    discount: '10% off',
+    description: 'Powerful air cooler for large indoor or outdoor spaces.',
+    image: AirCooler,
+  },
+  {
+    id: 10,
+    name: 'Airon Water',
+    price: 38900,
+    originalPrice: 40500,
+    rating: 4.4,
+    reviews: 19,
+    category: 'Water Solutions',
+    discount: '4% off',
+    description: 'Portable water cooling and dispensing solution.',
+    image: AirWater,
+  },
+  {
+    id: 11,
+    name: 'Bio Toilet',
+    price: 59000,
+    originalPrice: 62000,
+    rating: 4.8,
+    reviews: 26,
+    category: 'Portable Toilets',
+    discount: '5% off',
+    description: 'Environment-friendly bio toilet for outdoor locations.',
+    image: bio,
+  },
+  {
+    id: 12,
+    name: 'Duct AC',
+    price: 54500,
+    originalPrice: 60000,
+    rating: 4.5,
+    reviews: 24,
+    category: 'Air Conditioners',
+    discount: '9% off',
+    description: 'High-capacity duct air conditioning for large setups.',
+    image: ductac,
+  },
+  {
+    id: 13,
+    name: 'Fire Extinguisher Nitrogen',
+    price: 36500,
+    originalPrice: 41000,
+    rating: 4.3,
+    reviews: 12,
+    category: 'Fire Safety',
+    discount: '11% off',
+    description: 'Advanced nitrogen-based fire extinguisher.',
+    image: ABC,
+  },
+  {
+    id: 14,
+    name: 'Mist Fan',
+    price: 35000,
+    originalPrice: 38500,
+    rating: 4.6,
+    reviews: 29,
+    category: 'Fans',
+    discount: '9% off',
+    description: 'Portable misting fan to beat the summer heat.',
+    image: mistfan,
+  },
+  {
+    id: 15,
+    name: 'Patio Heater',
+    price: 41000,
+    originalPrice: 48000,
+    rating: 4.2,
+    reviews: 17,
+    category: 'Outdoor',
+    discount: '15% off',
+    description: 'All-weather patio heater for outdoor gatherings.',
+    image: patioHeater,
+  },
+  {
+    id: 16,
+    name: 'Shower Cabin',
+    price: 59900,
+    originalPrice: 67000,
+    rating: 4.9,
+    reviews: 32,
+    category: 'Luxe',
+    discount: '10% off',
+    description: 'Luxury mobile shower cabin with modern features.',
+    image: ShowerCabin,
+  },
+];
+
+const categories = [
+  'All',
+  'Air Conditioners',
+  'Coolers',
+  'Fans',
+  'Toilets',
+  'Outdoor',
+  'Fire Safety',
+  'Water Solutions',
+  'Luxe',
+  'Portable Toilets',
+  'Containers',
+];
+
+const discountOptions = [
+  'Up to 10% off',
+  '10% off or more',
+  '20% off or more',
+  '30% off or more',
+];
+
+function parseDiscountPercent(discountString: string) {
+  const match = discountString.match(/(\d+)%/);
+  return match ? Number(match[1]) : 0;
+}
+
+function discountFilterFuncs(option: string) {
+  switch (option) {
+    case 'Up to 10% off': return (d: number) => d <= 10;
+    case '10% off or more': return (d: number) => d >= 10;
+    case '20% off or more': return (d: number) => d >= 20;
+    case '30% off or more': return (d: number) => d >= 30;
+    default: return () => true;
+  }
+}
 
 const ProductsPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [priceRange, setPriceRange] = useState<[number, number]>([30000, 60000]);
   const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
 
-  const products = [
-    {
-      id: 1,
-      name: 'PM Container',
-      price: 37489,
-      originalPrice: 45000,
-      rating: 4.5,
-      reviews: 23,
-      category: 'Portable Toilets',
-      discount: '10% off'
-    },
-    {
-      id: 2,
-      name: 'PM Container',
-      price: 37489,
-      originalPrice: 45000,
-      rating: 4.5,
-      reviews: 23,
-      category: 'Portable Toilets',
-      discount: '15% off'
-    },
-    {
-      id: 3,
-      name: 'PM Container',
-      price: 37489,
-      originalPrice: 45000,
-      rating: 4.5,
-      reviews: 23,
-      category: 'Air Conditioners',
-      discount: '20% off'
-    },
-    {
-      id: 4,
-      name: 'PM Container',
-      price: 37489,
-      originalPrice: 45000,
-      rating: 4.5,
-      reviews: 23,
-      category: 'Containers',
-      discount: '25% off'
-    },
-    {
-      id: 5,
-      name: 'PM Container',
-      price: 37489,
-      originalPrice: 45000,
-      rating: 4.5,
-      reviews: 23,
-      category: 'Portable Toilets',
-      discount: '30% off'
-    }
-  ];
-
-  const categories = [
-    'All',
-    'Air Conditioners',
-    'Coolers',
-    'Fans',
-    'Toilets',
-    'Mobile Container',
-    'Luxe',
-    'Containers'
-  ];
-  const discountOptions = [
-    'Up to 10% off',
-    '10% off or more',
-    '20% off or more',
-    '30% off or more'
-  ];
-  function parseDiscountPercent(discountString: string) {
-    const match = discountString.match(/(\d+)%/);
-    return match ? Number(match[1]) : 0;
-  }
-  function discountFilterFuncs(option: string) {
-    switch (option) {
-      case 'Up to 10% off': return (d: number) => d <= 10;
-      case '10% off or more': return (d: number) => d >= 10;
-      case '20% off or more': return (d: number) => d >= 20;
-      case '30% off or more': return (d: number) => d >= 30;
-      default: return () => true;
-    }
-  }
   const handleDiscountChange = (discount: string) => {
-    setSelectedDiscounts(prev =>
+    setSelectedDiscounts((prev) =>
       prev.includes(discount)
-        ? prev.filter(d => d !== discount)
+        ? prev.filter((d) => d !== discount)
         : [...prev, discount]
     );
   };
-  const filteredProducts = products.filter(product => {
+
+  const filteredProducts = products.filter((product) => {
     if (selectedCategory !== 'All' && product.category !== selectedCategory) {
       return false;
     }
@@ -106,7 +281,7 @@ const ProductsPage: React.FC = () => {
     }
     if (selectedDiscounts.length > 0) {
       const productDiscountPercent = parseDiscountPercent(product.discount);
-      const matchesAny = selectedDiscounts.some(option =>
+      const matchesAny = selectedDiscounts.some((option) =>
         discountFilterFuncs(option)(productDiscountPercent)
       );
       if (!matchesAny) {
@@ -127,8 +302,11 @@ const ProductsPage: React.FC = () => {
               <div className="mb-8">
                 <h3 className="font-bold text-lg mb-4">CATEGORIES</h3>
                 <div className="space-y-2">
-                  {categories.map(category => (
-                    <label key={category} className="flex items-center space-x-2 cursor-pointer">
+                  {categories.map((category) => (
+                    <label
+                      key={category}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         name="category"
@@ -148,10 +326,12 @@ const ProductsPage: React.FC = () => {
                   <div className="flex items-center space-x-4">
                     <input
                       type="range"
-                      min="0"
-                      max="100000"
+                      min={30000}
+                      max={60000}
                       value={priceRange[1]}
-                      onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                      onChange={(e) =>
+                        setPriceRange([priceRange[0], parseInt(e.target.value)])
+                      }
                       className="flex-1"
                     />
                   </div>
@@ -165,8 +345,11 @@ const ProductsPage: React.FC = () => {
               <div className="mb-8">
                 <h3 className="font-bold text-lg mb-4">DISCOUNTS</h3>
                 <div className="space-y-2">
-                  {discountOptions.map(discount => (
-                    <label key={discount} className="flex items-center space-x-2 cursor-pointer">
+                  {discountOptions.map((discount) => (
+                    <label
+                      key={discount}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
                       <input
                         type="checkbox"
                         checked={selectedDiscounts.includes(discount)}
@@ -188,12 +371,15 @@ const ProductsPage: React.FC = () => {
                   No products found for selected filters.
                 </div>
               )}
-              {filteredProducts.map(product => (
-                <div key={product.id} className="relative bg-white rounded-lg shadow-sm p-6 flex flex-col md:flex-row gap-6 overflow-hidden">
+              {filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="relative bg-white rounded-lg shadow-sm p-6 flex flex-col md:flex-row gap-6 overflow-hidden"
+                >
                   {/* Product Image */}
                   <div className="relative w-full md:w-[175px] h-[233px] bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden mx-auto">
                     <img
-                      src={ProductImg}
+                      src={product.image || ProductImg}
                       alt={product.name}
                       className="
                         absolute top-0 left-0
@@ -207,7 +393,7 @@ const ProductsPage: React.FC = () => {
                         height: '100%',
                         maxWidth: '175.21px',
                         maxHeight: '233.61px',
-                        objectFit: 'cover'
+                        objectFit: 'cover',
                       }}
                     />
                   </div>
@@ -215,21 +401,32 @@ const ProductsPage: React.FC = () => {
                   <div className="flex-1">
                     <h3 className="font-bold text-xl mb-2">{product.name}</h3>
                     {/* Rating */}
-                    <div className="flex items-center space-x-2 mb-3">
+                    <div className="flex items-center space-x-2 mb-1">
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                            className={`w-4 h-4 ${
+                              i < Math.floor(product.rating)
+                                ? 'text-yellow-400 fill-current'
+                                : 'text-gray-300'
+                            }`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600">({product.reviews} reviews)</span>
+                      <span className="text-sm text-gray-600">
+                        ({product.reviews} reviews)
+                      </span>
                     </div>
+                    <div className="text-sm text-gray-700 mb-3">{product.description}</div>
                     {/* Price */}
-                    <div className="flex items-center space-x-3 mb-4">
-                      <span className="text-2xl font-bold text-green-600">₹{product.price.toLocaleString()}</span>
-                      <span className="text-lg text-gray-500 line-through">₹{product.originalPrice.toLocaleString()}</span>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span className="text-2xl font-bold text-green-600">
+                        ₹{product.price.toLocaleString()}
+                      </span>
+                      <span className="text-lg text-gray-500 line-through">
+                        ₹{product.originalPrice.toLocaleString()}
+                      </span>
                       <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">
                         {product.discount}
                       </span>
@@ -276,11 +473,11 @@ const ProductsPage: React.FC = () => {
           <h2 className="text-2xl font-bold mb-2">RECOMMENDATIONS</h2>
           <p className="text-gray-600 mb-8">As per your searches, here are a few suggestions you might be interested in</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map(product => (
+            {products.slice(0, 4).map((product) => (
               <div key={`rec-${product.id}`} className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="relative w-full h-[233px] bg-gray-200 flex items-center justify-center overflow-hidden mx-auto">
                   <img
-                    src={ProductImg}
+                    src={product.image || ProductImg}
                     alt={product.name}
                     className="
                       absolute top-0 left-0
@@ -294,7 +491,7 @@ const ProductsPage: React.FC = () => {
                       height: '100%',
                       maxWidth: '175.21px',
                       maxHeight: '233.61px',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
                     }}
                   />
                 </div>
@@ -318,9 +515,7 @@ const ProductsPage: React.FC = () => {
                   <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
                     {product.discount}
                   </span>
-                  <p className="text-xs text-gray-600 mt-2 mb-3">
-                    FREE delivery as soon as Thu, 2 Jan • Size - 1pft
-                  </p>
+                  <p className="text-xs text-gray-600 mt-2 mb-3">{product.description}</p>
                   <div className="flex space-x-2">
                     <button className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-1 px-3 rounded text-sm">
                       RENT
