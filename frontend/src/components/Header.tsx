@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Search, User, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/Logo.png';
+import logo from '../assets/logo.png';
 import { useCart } from '../contexts/CartContext';
 
 const navItems = [
