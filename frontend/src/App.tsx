@@ -2,9 +2,9 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { CartProvider } from './contexts/CartContext'; // <-- ADD
-import BookNow from './pages/Booking/BookNow'; // Adjust path as needed
-
+import { CartProvider } from './contexts/CartContext';
+import BookNow from './pages/Booking/BookNow';
+import ScrollToTop from './pages/ScrollToTop'; // <-- Import ScrollToTop
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
@@ -15,10 +15,10 @@ const SignIn = lazy(() => import('./pages/SignInPage'));
 const SignUp = lazy(() => import('./pages/SignUpPage'));
 const ProductsPage = lazy(() => import('./pages/Products'));
 const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
-const CartPage = lazy(() => import('./pages/Cart')); // <-- Name matches your 'cart.tsx'
+const CartPage = lazy(() => import('./pages/Cart'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
-// const IconSection = lazy(() => import('./pages/homepage/icon')); // <-- Import your IconSection
+const IconSection = lazy(() => import('./pages/homepage/icon'));
 
 function AppContent() {
   const location = useLocation();
@@ -35,7 +35,7 @@ function AppContent() {
               element={
                 <>
                   <Hero />
-                  {/* <IconSection /> */}
+                  <IconSection />
                   <BackBookNow />
                   <AboutSection />
                   <WhatOffer />
@@ -45,7 +45,7 @@ function AppContent() {
             />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailsPage />} />
-            <Route path="/cart" element={<CartPage />} /> {/* <-- CART ROUTE */}
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -63,6 +63,7 @@ function App() {
   return (
     <Router>
       <CartProvider>
+        <ScrollToTop /> {/* <-- Add it here */}
         <AppContent />
       </CartProvider>
     </Router>
