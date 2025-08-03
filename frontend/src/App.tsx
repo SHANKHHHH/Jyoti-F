@@ -38,8 +38,8 @@ function AppContent() {
                   {/* <IconSection /> */}
                   <BackBookNow />
                   <AboutSection />
-                  <BookForAnEvent />
                   <WhatOffer />
+                  <BookForAnEvent />
                 </>
               }
             />
