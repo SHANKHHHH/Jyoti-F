@@ -1,9 +1,11 @@
+// ProductDetailsPage.tsx
+
 import React, { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Star } from "lucide-react";
 import ProductImg from "../assets/Product.jpg";
 import { useCart } from "../contexts/CartContext";
-import { products } from "./Products"; // <-- Import the shared products array
+import { products } from "./Products"; // imports the products array
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -68,8 +70,11 @@ const ProductDetailsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-6 mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Side - Single Image */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-lg p-4 flex justify-center items-center" style={{ minHeight: 400 }}>
+          <div className="space-y-4 flex flex-col items-center">
+            <div
+              className="bg-white rounded-lg p-4 flex justify-center items-center"
+              style={{ minHeight: 200 }}
+            >
               <img
                 src={product.image || ProductImg}
                 alt={product.name}
@@ -77,19 +82,19 @@ const ProductDetailsPage: React.FC = () => {
                 style={{ maxWidth: 175, maxHeight: 233 }}
               />
             </div>
-            {/* No thumbnail section, since only one image */}
           </div>
           {/* Right: Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-6 flex flex-col">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
               <div className="flex items-center gap-3 mb-2">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-4 h-4 ${i < Math.floor(product.rating)
-                      ? "text-yellow-400 fill-current"
-                      : "text-gray-300"
-                    }`} />
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                        }`}
+                    />
                   ))}
                 </div>
                 <span className="text-sm text-gray-600">({product.reviews} reviews)</span>
@@ -98,7 +103,6 @@ const ProductDetailsPage: React.FC = () => {
             <div className="bg-orange-100 rounded-lg p-4">
               <div className="mb-2">
                 <span className="text-sm text-gray-600">FREE DELIVERY</span>
-                {/* You can display product.delivery here if you want */}
               </div>
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-3xl font-bold text-green-600">
@@ -150,10 +154,28 @@ const ProductDetailsPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            {/* You can add product details/specs below as in your current file */}
+
+            {/* ========= PRODUCT DESCRIPTION & DETAILS ========= */}
+            <div className="bg-white rounded-lg p-4">
+              <h2 className="text-lg font-semibold mb-2 text-gray-900">Product Details</h2>
+              {/* Show bullet points, fallback to description if missing */}
+              {Array.isArray(product.descriptions) && product.descriptions.length > 0 ? (
+                <ul className="list-disc pl-5 text-gray-700 mb-2 space-y-1">
+                  {product.descriptions.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-700 mb-2">{product.description}</p>
+              )}
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li><span className="font-medium">Category:</span> {product.category}</li>
+                <li><span className="font-medium">Discount:</span> {product.discount}</li>
+              </ul>
+            </div>
           </div>
         </div>
-        {/* Recommendations etc. can go here */}
+        {/* You can add recommendations or similar products below as needed */}
       </div>
     </div>
   );
