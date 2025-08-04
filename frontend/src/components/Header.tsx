@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { Menu, X, Search, User, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -6,7 +6,7 @@ import { useCart } from '../contexts/CartContext';
 
 const navItems = [
   { label: "PRODUCTS", anchor: "/products", icon: null },
-  { label: "EN", anchor: "#", icon: null }, // icon is now handled below
+  { label: "EN", anchor: "#", icon: null },
   { label: "SIGN IN", anchor: "/signin", icon: User },
   { label: "CART", anchor: "/cart", icon: ShoppingCart },
   { label: "ABOUT", anchor: "/about", icon: null },
@@ -25,6 +25,7 @@ const mobileItems = [
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const { cart } = useCart();
 
@@ -46,6 +47,16 @@ const Header = () => {
     setIsOpen(false);
   };
 
+  // Handle form submission for search (works on Enter and on icon click)
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (searchTerm.trim().length > 0) {
+      navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+      setIsOpen(false);
+      setSearchTerm('');
+    }
+  };
+
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -61,18 +72,21 @@ const Header = () => {
         {/* Desktop Search & Nav */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
           {/* Search */}
-          <div
+          <form
+            onSubmit={handleSearchSubmit}
             className={`relative flex items-center rounded-full px-4 py-2 w-64 lg:w-80 transition-colors ${
               scrolled ? 'bg-gray-100' : 'bg-white/90'
             }`}
           >
-            <Search className="text-gray-500 mr-3" size={18} />
+            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
             <input
               type="text"
               placeholder="Search for products"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
               className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
             />
-          </div>
+          </form>
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
             {navItems.map((item) => {
@@ -149,10 +163,26 @@ const Header = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div
-          className={`md:hidden shadow-lg absolute top-full left-0 w-full py-4 px-4 flex flex-col space-y-2 ${
+          className={`md:hidden shadow-lg absolute top-full left-0 w-full py-4 px-4 flex flex-col space-y-3 ${
             scrolled ? 'bg-white' : 'bg-[#2A2A2A]'
           }`}
         >
+          {/* Mobile Search Bar */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className={`flex items-center rounded-full px-4 py-2 w-full mb-3 transition-colors ${
+              scrolled ? 'bg-gray-100' : 'bg-white/90'
+            }`}
+          >
+            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
+            <input
+              type="text"
+              placeholder="Search for products"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
+            />
+          </form>
           {mobileItems.map((item) => (
             <button
               key={item.anchor}
