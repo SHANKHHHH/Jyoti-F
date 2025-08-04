@@ -12,7 +12,7 @@ import i7 from '../../assets/i7.png';
 import i8 from '../../assets/i8.png';
 import i9 from '../../assets/i9.png';
 
-const iconTitles = [
+const iconTitles: string[] = [
   "Air Conditioners",
   "Portable Coolers",
   "Mist Fans",
@@ -24,7 +24,12 @@ const iconTitles = [
   "Storage Containers"
 ];
 
-const icons = [
+interface Icon {
+  img: string;
+  label: string;
+}
+
+const icons: Icon[] = [
   { img: i1, label: iconTitles[0] },
   { img: i2, label: iconTitles[1] },
   { img: i3, label: iconTitles[2] },
@@ -39,16 +44,18 @@ const icons = [
 const IconSection: React.FC = () => {
   return (
     <div className="w-full bg-white py-12 px-4 md:px-8">
-      <div
-        className="
-          hidden
-          lg:grid grid-cols-9 gap-6 justify-center items-center max-w-6xl mx-auto
-        "
-      >
+      {/* Desktop Grid */}
+      <div className="
+        hidden lg:grid 
+        grid-cols-9
+        gap-8
+        justify-items-center
+        max-w-6xl mx-auto
+      ">
         {icons.map(({ img, label }, index) => (
           <div key={index} className="flex flex-col items-center text-center space-y-3">
             <div
-              className="w-24 h-24 bg-no-repeat bg-center bg-cover rounded-[1.2rem] flex items-center justify-center"
+              className="w-24 h-24 bg-no-repeat bg-center bg-cover rounded-xl flex items-center justify-center"
               style={{ backgroundImage: `url(${OrangeBg})` }}
             >
               <img
@@ -58,18 +65,18 @@ const IconSection: React.FC = () => {
                 draggable={false}
               />
             </div>
-            <p className="text-sm font-medium text-black">{label}</p>
+            <p className="text-sm font-medium text-black w-24 break-words">{label}</p>
           </div>
         ))}
       </div>
 
-      {/* Mobile slider */}
+      {/* Mobile Slider */}
       <div className="lg:hidden overflow-x-auto no-scrollbar">
         <div className="flex gap-6 w-max px-2">
           {icons.map(({ img, label }, index) => (
             <div key={index} className="flex flex-col items-center text-center space-y-2 min-w-[90px]">
               <div
-                className="w-20 h-20 bg-no-repeat bg-center bg-cover rounded-[1rem] flex items-center justify-center shrink-0"
+                className="w-20 h-20 bg-no-repeat bg-center bg-cover rounded-lg flex items-center justify-center"
                 style={{ backgroundImage: `url(${OrangeBg})` }}
               >
                 <img
@@ -79,7 +86,7 @@ const IconSection: React.FC = () => {
                   draggable={false}
                 />
               </div>
-              <p className="text-xs font-medium text-black w-[80px]">{label}</p>
+              <p className="text-xs font-medium text-black w-[80px] break-words">{label}</p>
             </div>
           ))}
         </div>
