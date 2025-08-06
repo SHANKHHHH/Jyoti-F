@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
-import BookNow from './pages/Booking/BookNow';
-import ScrollToTop from './pages/ScrollToTop'; // <-- Import ScrollToTop
+import ScrollToTop from './pages/ScrollToTop';
 
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
@@ -19,6 +18,13 @@ const CartPage = lazy(() => import('./pages/Cart'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const IconSection = lazy(() => import('./pages/homepage/icon'));
+
+// Original BookNow page
+const BookNow = lazy(() => import('./pages/Booking/BookNow'));
+
+// New booking flow components
+const EventSelectionPage = lazy(() => import('./pages/Booking/EventSelectionPage'));
+const ServiceSelectionPage = lazy(() => import('./pages/Booking/ServiceSelectionPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -51,6 +57,9 @@ function AppContent() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/booknow" element={<BookNow />} />
+            {/* New booking flow routes */}
+            <Route path="/event-selection" element={<EventSelectionPage />} />
+            <Route path="/service-selection" element={<ServiceSelectionPage />} />
           </Routes>
         </Suspense>
       </main>
@@ -63,7 +72,7 @@ function App() {
   return (
     <Router>
       <CartProvider>
-        <ScrollToTop /> {/* <-- Add it here */}
+        <ScrollToTop />
         <AppContent />
       </CartProvider>
     </Router>

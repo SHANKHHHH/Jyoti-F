@@ -1,45 +1,60 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+// Import images from assets folder
+import luxuryToiletsImage from '../../assets/Luxury Toilets.jpg';
+import bioLoosImage from '../../assets/Bio Loos.png';
+import handwashBasinsImage from '../../assets/Handwash Basin.jpg';
+import mensUrinalsImage from '../../assets/Mens Urinals.jpg';
+import coolingSystemsImage from '../../assets/Cooling System.jpg';
+import patioHeatersImage from '../../assets/Patio Heaters.jpg';
 
 interface ServiceOption {
   id: string;
   title: string;
-  image: string; // Placeholder for actual image path
+  image: string;
 }
 
-const ServicesSelectionPage: React.FC = () => {
+const ServiceSelectionPage: React.FC = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [showCustomService, setShowCustomService] = useState(false);
+  const [customService, setCustomService] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get data from previous page
+  const { selectedEvents, customEvent } = location.state || {};
 
   const serviceOptions: ServiceOption[] = [
     {
       id: 'luxury-toilets',
       title: 'Luxury Toilets',
-      image: 'PLACEHOLDER_LUXURY_TOILETS_IMAGE'
+      image: luxuryToiletsImage
     },
     {
       id: 'bio-loos',
       title: 'Bio Loos',
-      image: 'PLACEHOLDER_BIO_LOOS_IMAGE'
+      image: bioLoosImage
     },
     {
       id: 'handwash-basins',
       title: 'Handwash Basins',
-      image: 'PLACEHOLDER_HANDWASH_BASINS_IMAGE'
+      image: handwashBasinsImage
     },
     {
       id: 'mens-urinals',
       title: "Men's Urinals",
-      image: 'PLACEHOLDER_MENS_URINALS_IMAGE'
+      image: mensUrinalsImage
     },
     {
       id: 'cooling-systems',
       title: 'Cooling Systems',
-      image: 'PLACEHOLDER_COOLING_SYSTEMS_IMAGE'
+      image: coolingSystemsImage
     },
     {
       id: 'patio-heaters',
       title: 'Patio Heaters',
-      image: 'PLACEHOLDER_PATIO_HEATERS_IMAGE'
+      image: patioHeatersImage
     }
   ];
 
@@ -52,17 +67,19 @@ const ServicesSelectionPage: React.FC = () => {
   };
 
   const handleReturn = () => {
-    // Handle return to previous step
-    console.log('Returning to previous step');
+    navigate('/event-selection');
   };
 
   const handleNext = () => {
     console.log('Selected services:', selectedServices);
-    // Handle next step logic here
+    console.log('Selected events from previous page:', selectedEvents);
+    console.log('Custom event:', customEvent);
+    console.log('Custom service:', customService);
+    // Handle next step logic here - maybe navigate to a final booking form
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Return Button */}
         <div className="mb-8">
@@ -101,12 +118,11 @@ const ServicesSelectionPage: React.FC = () => {
             >
               {/* Image Container */}
               <div className="aspect-[4/3] bg-gray-300 flex items-center justify-center relative">
-                {/* Replace this div with actual image */}
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center">
-                  <span className="text-gray-600 text-sm text-center px-4">
-                    {service.image}
-                  </span>
-                </div>
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                />
                 
                 {/* Selection Overlay */}
                 {selectedServices.includes(service.id) && (
@@ -149,6 +165,8 @@ const ServicesSelectionPage: React.FC = () => {
             <textarea
               placeholder="Enter your custom service requirements..."
               rows={3}
+              value={customService}
+              onChange={(e) => setCustomService(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none resize-none"
             />
           </div>
@@ -158,9 +176,9 @@ const ServicesSelectionPage: React.FC = () => {
         <div className="flex justify-center">
           <button
             onClick={handleNext}
-            disabled={selectedServices.length === 0}
+            disabled={selectedServices.length === 0 && !customService.trim()}
             className={`px-12 py-3 rounded-full font-semibold text-white transition-all duration-300 ${
-              selectedServices.length > 0
+              selectedServices.length > 0 || customService.trim()
                 ? 'bg-emerald-500 hover:bg-emerald-600 hover:scale-105 shadow-lg'
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
@@ -170,10 +188,16 @@ const ServicesSelectionPage: React.FC = () => {
         </div>
 
         {/* Selection Counter */}
-        {selectedServices.length > 0 && (
+        {(selectedServices.length > 0 || customService.trim()) && (
           <div className="text-center mt-6">
             <p className="text-gray-600">
-              {selectedServices.length} service{selectedServices.length > 1 ? 's' : ''} selected
+              {selectedServices.length > 0 && (
+                <>
+                  {selectedServices.length} service{selectedServices.length > 1 ? 's' : ''} selected
+                </>
+              )}
+              {selectedServices.length > 0 && customService.trim() && ' + '}
+              {customService.trim() && '1 custom service'}
             </p>
           </div>
         )}
@@ -182,4 +206,4 @@ const ServicesSelectionPage: React.FC = () => {
   );
 };
 
-export default ServicesSelectionPage;
+export default ServiceSelectionPage;
