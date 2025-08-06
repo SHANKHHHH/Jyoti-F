@@ -47,7 +47,6 @@ const Header = () => {
     setIsOpen(false);
   };
 
-  // Handle form submission for search (works on Enter and on icon click)
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (searchTerm.trim().length > 0) {
@@ -60,13 +59,24 @@ const Header = () => {
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-lg py-2' : 'bg-transparent py-4'
+        scrolled 
+          ? 'bg-white shadow-lg py-2' 
+          : 'bg-black/60 backdrop-blur-sm py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <img src={logo} alt="Jyoti Logo" className="h-12 w-auto" />
+          <img 
+            src={logo} 
+            alt="Jyoti Logo" 
+            className="h-12 w-auto transition-all duration-300"
+            style={{
+              filter: scrolled 
+                ? undefined 
+                : 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))'
+            }}
+          />
         </div>
 
         {/* Desktop Search & Nav */}
@@ -87,6 +97,7 @@ const Header = () => {
               className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
             />
           </form>
+          
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
             {navItems.map((item) => {
@@ -95,7 +106,7 @@ const Header = () => {
                   <button
                     key={item.label}
                     onClick={() => navigate(item.anchor)}
-                    className={`relative flex items-center gap-1 font-semibold text-sm transition-colors ${
+                    className={`relative flex items-center gap-1 font-semibold text-sm transition-colors hover:text-amber-500 ${
                       scrolled ? 'text-gray-800' : 'text-white'
                     }`}
                   >
@@ -109,7 +120,7 @@ const Header = () => {
                   </button>
                 );
               }
-              // Special rendering for EN (language) with SVG flag
+              
               if (item.label === "EN") {
                 return (
                   <button
@@ -120,19 +131,18 @@ const Header = () => {
                     }`}
                   >
                     <span>{item.label}</span>
-                    {/* Inline SVG Indian Flag */}
                     <span className="inline-block align-middle">
                       <svg width="19" height="13" viewBox="0 0 19 13" fill="none">
                         <rect width="19" height="4.3" y="0" fill="#FF9933"/>
                         <rect width="19" height="4.3" y="4.3" fill="#fff"/>
                         <rect width="19" height="4.3" y="8.6" fill="#138808"/>
-                        {/* Ashoka Chakra */}
                         <circle cx="9.5" cy="6.5" r="1.0" fill="none" stroke="#000088" strokeWidth="1" />
                       </svg>
                     </span>
                   </button>
                 );
               }
+              
               return (
                 <button
                   key={item.label}
@@ -164,10 +174,9 @@ const Header = () => {
       {isOpen && (
         <div
           className={`md:hidden shadow-lg absolute top-full left-0 w-full py-4 px-4 flex flex-col space-y-3 ${
-            scrolled ? 'bg-white' : 'bg-[#2A2A2A]'
+            scrolled ? 'bg-white' : 'bg-black/80 backdrop-blur-sm'
           }`}
         >
-          {/* Mobile Search Bar */}
           <form
             onSubmit={handleSearchSubmit}
             className={`flex items-center rounded-full px-4 py-2 w-full mb-3 transition-colors ${
