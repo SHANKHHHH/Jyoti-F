@@ -44,28 +44,89 @@ const CheckOut: React.FC = () => {
     gst = ''
   } = location.state || {};
 
-  // Service image mapping
+  // Enhanced Service image mapping with multiple possible keys
   const serviceImageMap: { [key: string]: string } = {
     'Luxury Toilets': luxuryToiletsImage,
+    'luxury-toilets': luxuryToiletsImage,
     'Bio Loos': bioLoosImage,
+    'bio-loos': bioLoosImage,
     'Handwash Basins': handwashBasinsImage,
+    'handwash-basins': handwashBasinsImage,
     "Men's Urinals": mensUrinalsImage,
+    'mens-urinals': mensUrinalsImage,
     'Cooling Systems': coolingSystemsImage,
-    'Patio Heaters': patioHeatersImage
+    'cooling-systems': coolingSystemsImage,
+    'Patio Heaters': patioHeatersImage,
+    'patio-heaters': patioHeatersImage
   };
 
-  // Event image mapping
+  // Enhanced Event image mapping with multiple possible keys
   const eventImageMap: { [key: string]: string } = {
     'VVIP Events (Conferences & Rallys)': vvipImage,
+    'VIP Events (Conferences & Rallys)': vvipImage,
+    'vip-events': vvipImage,
     'Festivals & Concerts': festivalImage,
-    'Social & Corporate': socialImage
+    'festivals-concerts': festivalImage,
+    'Social & Corporate': socialImage,
+    'Social & Corporate Gatherings': socialImage,
+    'social-corporate': socialImage
+  };
+
+  // Function to get service image with fallback - Fixed return type
+  const getServiceImage = (serviceName: string): string | null => {
+    // Try exact match first
+    if (serviceImageMap[serviceName]) {
+      return serviceImageMap[serviceName];
+    }
+    
+    // Try lowercase and remove special characters
+    const cleanName = serviceName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    if (serviceImageMap[cleanName]) {
+      return serviceImageMap[cleanName];
+    }
+    
+    // Try partial matching
+    const mapKeys = Object.keys(serviceImageMap);
+    const partialMatch = mapKeys.find(key => 
+      key.toLowerCase().includes(serviceName.toLowerCase()) ||
+      serviceName.toLowerCase().includes(key.toLowerCase())
+    );
+    
+    if (partialMatch) {
+      return serviceImageMap[partialMatch];
+    }
+    
+    return null;
+  };
+
+  // Function to get event image with fallback - Fixed return type
+  const getEventImage = (eventName: string): string | null => {
+    // Try exact match first
+    if (eventImageMap[eventName]) {
+      return eventImageMap[eventName];
+    }
+    
+    // Try partial matching
+    const mapKeys = Object.keys(eventImageMap);
+    const partialMatch = mapKeys.find(key => 
+      key.toLowerCase().includes(eventName.toLowerCase()) ||
+      eventName.toLowerCase().includes(key.toLowerCase())
+    );
+    
+    if (partialMatch) {
+      return eventImageMap[partialMatch];
+    }
+    
+    return null;
   };
 
   // Event gradient mapping
   const eventGradientMap: { [key: string]: string } = {
     'VVIP Events (Conferences & Rallys)': 'bg-gradient-to-r from-blue-600 to-purple-600',
+    'VIP Events (Conferences & Rallys)': 'bg-gradient-to-r from-blue-600 to-purple-600',
     'Festivals & Concerts': 'bg-gradient-to-r from-purple-500 to-yellow-500',
-    'Social & Corporate': 'bg-gradient-to-r from-green-500 to-blue-500'
+    'Social & Corporate': 'bg-gradient-to-r from-green-500 to-blue-500',
+    'Social & Corporate Gatherings': 'bg-gradient-to-r from-green-500 to-blue-500'
   };
 
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
@@ -129,9 +190,26 @@ const CheckOut: React.FC = () => {
     alert('Booking submitted successfully!');
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 pt-24">
       <div className="max-w-6xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-8">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="font-medium underline">Back</span>
+          </button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
@@ -215,16 +293,27 @@ const CheckOut: React.FC = () => {
                 <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded">1</span>
               </div>
 
-              {/* Show selected event or default message */}
+              {/* Show selected event */}
               {eventType ? (
                 <div className={`${eventGradientMap[eventType] || 'bg-gradient-to-r from-purple-500 to-yellow-500'} rounded-lg p-4 text-white mb-4`}>
-                  {eventImageMap[eventType] && (
-                    <img 
-                      src={eventImageMap[eventType]} 
-                      alt={eventType}
-                      className="w-full h-20 object-cover rounded mb-3"
-                    />
-                  )}
+                  {(() => {
+                    const eventImage = getEventImage(eventType);
+                    return eventImage ? (
+                      <img 
+                        src={eventImage}
+                        alt={eventType}
+                        className="w-full h-20 object-cover rounded mb-3"
+                        onError={(e) => {
+                          console.log('Event image failed to load:', eventType);
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-20 bg-white bg-opacity-20 rounded mb-3 flex items-center justify-center">
+                        <span className="text-white text-xs">No image available</span>
+                      </div>
+                    );
+                  })()}
                   <h3 className="font-semibold text-sm">{eventType}</h3>
                 </div>
               ) : (
@@ -250,22 +339,29 @@ const CheckOut: React.FC = () => {
               {/* Show selected services */}
               <div className="space-y-4">
                 {selectedServices && selectedServices.length > 0 ? (
-                  selectedServices.map((service: string, index: number) => (
-                    <div key={index} className="bg-gray-100 rounded-lg p-3">
-                      {serviceImageMap[service] ? (
-                        <img 
-                          src={serviceImageMap[service]} 
-                          alt={service} 
-                          className="w-full h-20 object-cover rounded mb-2"
-                        />
-                      ) : (
-                        <div className="w-full h-20 bg-gray-200 rounded mb-2 flex items-center justify-center">
-                          <span className="text-gray-500 text-xs">{service}</span>
-                        </div>
-                      )}
-                      <h3 className="font-medium text-gray-800 text-sm">{service}</h3>
-                    </div>
-                  ))
+                  selectedServices.map((service: string, index: number) => {
+                    const serviceImage = getServiceImage(service);
+                    return (
+                      <div key={index} className="bg-gray-100 rounded-lg p-3">
+                        {serviceImage ? (
+                          <img 
+                            src={serviceImage}
+                            alt={service} 
+                            className="w-full h-20 object-cover rounded mb-2"
+                            onError={(e) => {
+                              console.log('Service image failed to load:', service);
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-20 bg-gray-200 rounded mb-2 flex items-center justify-center">
+                            <span className="text-gray-500 text-xs">No image for: {service}</span>
+                          </div>
+                        )}
+                        <h3 className="font-medium text-gray-800 text-sm">{service}</h3>
+                      </div>
+                    );
+                  })
                 ) : (
                   <div className="bg-gray-100 rounded-lg p-4 text-center text-gray-500">
                     <p className="text-sm">No services selected</p>
@@ -305,7 +401,7 @@ const CheckOut: React.FC = () => {
                   />
                   <button className="text-gray-400 hover:text-gray-600">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7-7 7-7" />
                     </svg>
                   </button>
                 </div>
@@ -323,6 +419,8 @@ const CheckOut: React.FC = () => {
 
               <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
                 💡 {eventDetails.paxCount} people ÷ 30 = {eventDetails.toilets} toilets
+                <br />
+                <span className="text-orange-600">1 toilet serves 30 people</span>
               </div>
 
               <div className="mt-6">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import vvipImage from "../../assets/VVIP.jpg";
 import festivalImage from "../../assets/HOLI.jpg";
@@ -12,9 +12,9 @@ interface EventOption {
 }
 
 const eventOptions: EventOption[] = [
-  { id: 'vip-events', title: 'VIP Events (Conferences & Rallys)', image: vvipImage },
+  { id: 'vip-events', title: 'VVIP Events (Conferences & Rallys)', image: vvipImage },
   { id: 'festivals-concerts', title: 'Festivals & Concerts', image: festivalImage },
-  { id: 'social-corporate', title: 'Social & Corporate Gatherings', image: socialImage },
+  { id: 'social-corporate', title: 'Social & Corporate', image: socialImage },
   { id: 'amusement-parks', title: 'Amusement Parks, Fairs & Carnivals', image: vvipImage },
   { id: 'sports', title: 'Sports', image: socialImage },
   { id: 'weddings-family', title: 'Weddings & Family Gatherings', image: festivalImage },
@@ -25,6 +25,12 @@ const EventSelectionPage: React.FC = () => {
   const [showCustomEvent, setShowCustomEvent] = useState(false);
   const [customEvent, setCustomEvent] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get eventType from WhatOffer page
+  const { eventType } = location.state || {};
+  
+  console.log('EventSelection - Received eventType:', eventType);
 
   const handleEventToggle = (eventId: string) => {
     setSelectedEvents(prev =>
@@ -35,16 +41,18 @@ const EventSelectionPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log('Selected events:', selectedEvents);
-    if (customEvent.trim()) {
-      console.log('Custom event:', customEvent);
-    }
+    console.log('EventSelection - Passing data:', {
+      selectedEvents,
+      customEvent: customEvent.trim() || null,
+      eventType
+    });
     
     // Navigate to service selection page
     navigate('/service-selection', { 
       state: { 
         selectedEvents,
-        customEvent: customEvent.trim() || null
+        customEvent: customEvent.trim() || null,
+        eventType // This is the crucial fix
       } 
     });
   };
@@ -52,6 +60,19 @@ const EventSelectionPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="font-medium underline">Back</span>
+          </button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-orange-500 mb-4">
@@ -60,6 +81,14 @@ const EventSelectionPage: React.FC = () => {
           <p className="text-lg text-orange-400">
             View the options available and select your event
           </p>
+          {/* Show pre-selected event */}
+          {eventType && (
+            <div className="mt-4 p-3 bg-blue-100 rounded-lg inline-block">
+              <p className="text-blue-700 text-sm">
+                Pre-selected: <span className="font-semibold">{eventType}</span>
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Event Grid */}
@@ -133,9 +162,9 @@ const EventSelectionPage: React.FC = () => {
         <div className="flex justify-center">
           <button
             onClick={handleNext}
-            disabled={selectedEvents.length === 0 && !customEvent.trim()}
+            disabled={selectedEvents.length === 0 && !customEvent.trim() && !eventType}
             className={`px-12 py-3 rounded-full font-semibold text-white transition-all duration-300 ${
-              selectedEvents.length > 0 || customEvent.trim()
+              selectedEvents.length > 0 || customEvent.trim() || eventType
                 ? 'bg-emerald-500 hover:bg-emerald-600 hover:scale-105 shadow-lg'
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
@@ -145,12 +174,13 @@ const EventSelectionPage: React.FC = () => {
         </div>
 
         {/* Selection Counter */}
-        {(selectedEvents.length > 0 || customEvent.trim()) && (
+        {(selectedEvents.length > 0 || customEvent.trim() || eventType) && (
           <div className="text-center mt-6">
             <p className="text-gray-600">
+              {eventType && 'Pre-selected event + '}
               {selectedEvents.length > 0 && (
                 <>
-                  {selectedEvents.length} event{selectedEvents.length > 1 ? 's' : ''} selected
+                  {selectedEvents.length} additional event{selectedEvents.length > 1 ? 's' : ''} selected
                 </>
               )}
               {selectedEvents.length > 0 && customEvent.trim() && ' + '}

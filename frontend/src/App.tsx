@@ -19,12 +19,11 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const IconSection = lazy(() => import('./pages/homepage/icon'));
 
-// New booking flow components only
+// Booking flow components
 const EventSelectionPage = lazy(() => import('./pages/Booking/EventSelectionPage'));
 const ServiceSelectionPage = lazy(() => import('./pages/Booking/ServiceSelectionPage'));
 const IntroductionPage = lazy(() => import('./pages/Booking/IntroductionPage'));
 const CheckOut = lazy(() => import('./pages/Booking/CheckOut'));
-
 
 function AppContent() {
   const location = useLocation();

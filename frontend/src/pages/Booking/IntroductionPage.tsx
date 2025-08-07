@@ -15,6 +15,8 @@ const IntroductionPage: React.FC = () => {
   // Get data passed from previous pages
   const { selectedServices, eventType, bookingData } = location.state || {};
 
+  console.log('Introduction - Received data:', { selectedServices, eventType, bookingData });
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     mobileNumber: '',
@@ -38,6 +40,13 @@ const IntroductionPage: React.FC = () => {
       alert('Please fill in all required fields');
       return;
     }
+
+    console.log('Introduction - Passing to checkout:', {
+      ...formData,
+      selectedServices,
+      eventType,
+      bookingData
+    });
 
     // Navigate to checkout page with all collected data
     navigate('/checkout', {

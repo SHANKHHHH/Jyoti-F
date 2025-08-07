@@ -24,6 +24,9 @@ const ServiceSelectionPage: React.FC = () => {
 
   // Get data from previous page
   const { selectedEvents, customEvent, eventType } = location.state || {};
+  
+  // Debug logs
+  console.log('ServiceSelection - Received data:', { selectedEvents, customEvent, eventType });
 
   const serviceOptions: ServiceOption[] = [
     {
@@ -67,7 +70,7 @@ const ServiceSelectionPage: React.FC = () => {
   };
 
   const handleReturn = () => {
-    navigate('/event-selection');
+    navigate('/event-selection', { state: { eventType } });
   };
 
   const handleNext = () => {
@@ -75,6 +78,13 @@ const ServiceSelectionPage: React.FC = () => {
     const selectedServiceTitles = selectedServices.map(serviceId => 
       serviceOptions.find(service => service.id === serviceId)?.title
     ).filter(Boolean);
+
+    console.log('ServiceSelection - Passing data:', {
+      selectedEvents,
+      customEvent,
+      eventType,
+      selectedServices: selectedServiceTitles
+    });
 
     // Navigate to introduction page with all collected data
     navigate('/introduction', {

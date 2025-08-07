@@ -15,7 +15,7 @@ const WhatOffer: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBookNow = () => {
-    navigate("/event-selection", { state: { fromWhatOffer: true } });
+    navigate("/event-selection");
   };
 
   const handleEventClick = (eventTitle: string) => {
