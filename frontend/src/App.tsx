@@ -19,12 +19,12 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const IconSection = lazy(() => import('./pages/homepage/icon'));
 
-// Original BookNow page
-const BookNow = lazy(() => import('./pages/Booking/BookNow'));
-
-// New booking flow components
+// New booking flow components only
 const EventSelectionPage = lazy(() => import('./pages/Booking/EventSelectionPage'));
 const ServiceSelectionPage = lazy(() => import('./pages/Booking/ServiceSelectionPage'));
+const IntroductionPage = lazy(() => import('./pages/Booking/IntroductionPage'));
+const CheckOut = lazy(() => import('./pages/Booking/CheckOut'));
+
 
 function AppContent() {
   const location = useLocation();
@@ -56,10 +56,11 @@ function AppContent() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/booknow" element={<BookNow />} />
             {/* New booking flow routes */}
             <Route path="/event-selection" element={<EventSelectionPage />} />
             <Route path="/service-selection" element={<ServiceSelectionPage />} />
+            <Route path="/introduction" element={<IntroductionPage />} />
+            <Route path="/checkout" element={<CheckOut />} />
           </Routes>
         </Suspense>
       </main>

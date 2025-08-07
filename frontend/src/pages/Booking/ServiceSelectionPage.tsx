@@ -23,7 +23,7 @@ const ServiceSelectionPage: React.FC = () => {
   const navigate = useNavigate();
 
   // Get data from previous page
-  const { selectedEvents, customEvent } = location.state || {};
+  const { selectedEvents, customEvent, eventType } = location.state || {};
 
   const serviceOptions: ServiceOption[] = [
     {
@@ -71,11 +71,32 @@ const ServiceSelectionPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log('Selected services:', selectedServices);
-    console.log('Selected events from previous page:', selectedEvents);
-    console.log('Custom event:', customEvent);
-    console.log('Custom service:', customService);
-    // Handle next step logic here - maybe navigate to a final booking form
+    // Get selected service titles for better data passing
+    const selectedServiceTitles = selectedServices.map(serviceId => 
+      serviceOptions.find(service => service.id === serviceId)?.title
+    ).filter(Boolean);
+
+    // Navigate to introduction page with all collected data
+    navigate('/introduction', {
+      state: {
+        // Data from event selection
+        selectedEvents,
+        customEvent,
+        eventType,
+        // Data from service selection
+        selectedServices: selectedServiceTitles,
+        selectedServiceIds: selectedServices,
+        customService: customService.trim() || null,
+        // Combined data for easy access
+        bookingData: {
+          events: selectedEvents || [],
+          customEvent: customEvent || null,
+          eventType: eventType || null,
+          services: selectedServiceTitles || [],
+          customService: customService.trim() || null
+        }
+      }
+    });
   };
 
   return (
@@ -102,6 +123,14 @@ const ServiceSelectionPage: React.FC = () => {
           <p className="text-lg text-orange-400">
             View the options available and select your requirements
           </p>
+          {/* Show selected event info if available */}
+          {eventType && (
+            <div className="mt-4 p-3 bg-orange-100 rounded-lg inline-block">
+              <p className="text-orange-700 text-sm">
+                Selected Event: <span className="font-semibold">{eventType}</span>
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Services Grid */}
