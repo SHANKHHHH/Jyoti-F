@@ -44,11 +44,32 @@ const CheckOut: React.FC = () => {
     gst = ''
   } = location.state || {};
 
+  const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
+    name: name || 'Sire N',
+    mobileNumber: mobileNumber || '+91 1234567890',
+    email: email || 'techwire123@gmail.com',
+    gst: gst || 'XXXXXXXXXXXXXXXXX'
+  });
+
+  const [eventDetails, setEventDetails] = useState<EventDetails>({
+    paxCount: 900,
+    toilets: 0,
+    location: 'Yashwant Sai Fargo Road, Bangalore',
+    startDate: 'Nov: August 1st',
+    endDate: 'to August 3rd'
+  });
+
+  const [submissionStatus, setSubmissionStatus] = useState({
+    loading: false,
+    error: '',
+    success: ''
+  });
+
   // Enhanced Service image mapping with multiple possible keys
   const serviceImageMap: { [key: string]: string } = {
     'Luxury Toilets': luxuryToiletsImage,
     'luxury-toilets': luxuryToiletsImage,
-    'Bio Loos': bioLoosImage,
+    'Bio Loo': bioLoosImage,
     'bio-loos': bioLoosImage,
     'Handwash Basins': handwashBasinsImage,
     'handwash-basins': handwashBasinsImage,
@@ -128,22 +149,7 @@ const CheckOut: React.FC = () => {
     'Social & Corporate': 'bg-gradient-to-r from-green-500 to-blue-500',
     'Social & Corporate Gatherings': 'bg-gradient-to-r from-green-500 to-blue-500'
   };
-
-  const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
-    name: name || 'Sire N',
-    mobileNumber: mobileNumber || '+91 1234567890',
-    email: email || 'techwire123@gmail.com',
-    gst: gst || 'XXXXXXXXXXXXXXXXX'
-  });
-
-  const [eventDetails, setEventDetails] = useState<EventDetails>({
-    paxCount: 900,
-    toilets: 0,
-    location: 'Yashwant Sai Fargo Road, Bangalore',
-    startDate: 'Nov: August 1st',
-    endDate: 'to August 3rd'
-  });
-
+  
   // Auto-calculate toilets based on pax count (1 toilet per 30 people)
   useEffect(() => {
     const calculatedToilets = Math.ceil(eventDetails.paxCount / 30);
@@ -177,7 +183,9 @@ const CheckOut: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setSubmissionStatus({ loading: true, error: '', success: '' });
+
     const finalBookingData = {
       personalInfo,
       eventDetails,
@@ -186,8 +194,38 @@ const CheckOut: React.FC = () => {
       bookingData
     };
     
-    console.log('Final booking data:', finalBookingData);
-    alert('Booking submitted successfully!');
+    try {
+      // Send data to the backend API endpoint
+      const response = await fetch('http://localhost:3000/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalBookingData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit booking.');
+      }
+
+      setSubmissionStatus({
+        loading: false,
+        error: '',
+        success: 'Booking submitted successfully!'
+      });
+
+      console.log('Final booking data submitted:', result);
+
+    } catch (error: any) {
+      console.error('Error submitting booking:', error);
+      setSubmissionStatus({
+        loading: false,
+        error: error.message,
+        success: ''
+      });
+    }
   };
 
   const handleBack = () => {
@@ -222,6 +260,25 @@ const CheckOut: React.FC = () => {
             Experience the difference with Jyoti Enterprises, <span className="text-orange-500">where hygiene meets comfort</span>.
           </p>
         </div>
+        
+        {/* Display submission status */}
+        {submissionStatus.loading && (
+          <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4" role="alert">
+            <p className="font-bold">Submitting your booking...</p>
+          </div>
+        )}
+        {submissionStatus.error && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+            <p className="font-bold">Error!</p>
+            <p>{submissionStatus.error}</p>
+          </div>
+        )}
+        {submissionStatus.success && (
+          <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+            <p className="font-bold">Success!</p>
+            <p>{submissionStatus.success}</p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Personal Information - Column 1 */}
@@ -472,9 +529,10 @@ const CheckOut: React.FC = () => {
         <div className="text-center mt-8">
           <button
             onClick={handleSubmit}
-            className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            disabled={submissionStatus.loading}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Submit Booking
+            {submissionStatus.loading ? 'Submitting...' : 'Submit Booking'}
           </button>
         </div>
       </div>

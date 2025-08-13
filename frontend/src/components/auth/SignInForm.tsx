@@ -1,23 +1,55 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { login } from "../../api/auth";
 
 const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // ✅ Initialize navigation
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await login(email, password);
+      console.log("Login success:", data);
+      localStorage.setItem("token", data.token);
+
+      // ✅ Redirect to homepage after successful login
+      navigate("/"); 
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
       <img src="/logo.png" alt="Logo" className="mx-auto mb-4 w-20" />
       <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
 
-      <form>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-400"
         />
         <input
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           placeholder="Your Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full mb-2 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-400"
         />
 
@@ -36,9 +68,10 @@ const SignInForm: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full bg-emerald-500 text-white py-2 rounded-md transition duration-300 hover:bg-emerald-600"
+          disabled={loading}
+          className="w-full bg-emerald-500 text-white py-2 rounded-md transition duration-300 hover:bg-emerald-600 disabled:opacity-50"
         >
-          Submit
+          {loading ? "Signing In..." : "Submit"}
         </button>
       </form>
 

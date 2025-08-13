@@ -1,36 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// Import event images
 import vvipImage from "../../assets/VVIP.jpg";
 import festivalImage from "../../assets/HOLI.jpg";
 import socialImage from "../../assets/VVI.png";
 
-interface EventOption {
+// Define the structure for an event option received from the API
+interface EventData {
   id: string;
-  title: string;
-  image: string;
+  name: string;
 }
 
-const eventOptions: EventOption[] = [
-  { id: 'vip-events', title: 'VVIP Events (Conferences & Rallys)', image: vvipImage },
-  { id: 'festivals-concerts', title: 'Festivals & Concerts', image: festivalImage },
-  { id: 'social-corporate', title: 'Social & Corporate', image: socialImage },
-  { id: 'amusement-parks', title: 'Amusement Parks, Fairs & Carnivals', image: vvipImage },
-  { id: 'sports', title: 'Sports', image: socialImage },
-  { id: 'weddings-family', title: 'Weddings & Family Gatherings', image: festivalImage },
-];
-
 const EventSelectionPage: React.FC = () => {
+  const [events, setEvents] = useState<EventData[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const [showCustomEvent, setShowCustomEvent] = useState(false);
   const [customEvent, setCustomEvent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
+  // A mapping object to link event names from the API to local image imports
+  const eventImageMap: { [key: string]: string } = {
+    'VVIP Events (Conferences & Rallys)': vvipImage,
+    'Festivals & Concerts': festivalImage,
+    'Social & Corporate': socialImage,
+    'Amusement Parks, Fairs & Carnivals': vvipImage,
+    'Sports': socialImage,
+    'Weddings & Family Gatherings': festivalImage,
+  };
+  
   // Get eventType from WhatOffer page
   const { eventType } = location.state || {};
   
   console.log('EventSelection - Received eventType:', eventType);
+
+  // useEffect hook to fetch events from the backend API when the component mounts
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/events');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        // Check if the API response is successful and contains data
+        if (result.success && result.data) {
+          setEvents(result.data);
+        } else {
+          throw new Error('API response was not successful or data is missing.');
+        }
+      } catch (e: any) {
+        setError('Failed to fetch events. Please try again later.');
+        console.error('Error fetching events:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []); // The empty dependency array ensures this runs only once on mount
 
   const handleEventToggle = (eventId: string) => {
     setSelectedEvents(prev =>
@@ -41,8 +73,14 @@ const EventSelectionPage: React.FC = () => {
   };
 
   const handleNext = () => {
+    // Get selected event names from the fetched data
+    const selectedEventNames = selectedEvents.map(eventId => {
+      const event = events.find(e => e.id === eventId);
+      return event ? event.name : null;
+    }).filter(Boolean) as string[];
+
     console.log('EventSelection - Passing data:', {
-      selectedEvents,
+      selectedEvents: selectedEventNames,
       customEvent: customEvent.trim() || null,
       eventType
     });
@@ -50,12 +88,29 @@ const EventSelectionPage: React.FC = () => {
     // Navigate to service selection page
     navigate('/service-selection', { 
       state: { 
-        selectedEvents,
+        selectedEvents: selectedEventNames,
         customEvent: customEvent.trim() || null,
         eventType // This is the crucial fix
       } 
     });
   };
+
+  // --- Conditional Rendering for Loading and Error States ---
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-orange-500 font-semibold">Loading events...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-red-500 font-semibold">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
@@ -93,7 +148,7 @@ const EventSelectionPage: React.FC = () => {
 
         {/* Event Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {eventOptions.map((event) => (
+          {events.map((event) => (
             <div
               key={event.id}
               onClick={() => handleEventToggle(event.id)}
@@ -106,8 +161,8 @@ const EventSelectionPage: React.FC = () => {
               {/* IMAGE */}
               <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center relative w-full">
                 <img
-                  src={event.image}
-                  alt={event.title}
+                  src={eventImageMap[event.name] || 'https://placehold.co/400x300?text=Image+Not+Found'}
+                  alt={event.name}
                   className="w-full h-full object-cover"
                   draggable={false}
                 />
@@ -124,7 +179,7 @@ const EventSelectionPage: React.FC = () => {
               </div>
               {/* Title */}
               <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                <h3 className="font-semibold text-sm">{event.title}</h3>
+                <h3 className="font-semibold text-sm">{event.name}</h3>
               </div>
             </div>
           ))}

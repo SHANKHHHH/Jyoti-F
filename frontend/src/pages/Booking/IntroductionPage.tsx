@@ -23,6 +23,13 @@ const IntroductionPage: React.FC = () => {
     email: '',
     gst: ''
   });
+  
+  // Remove submissionStatus since API call is no longer being made
+  // const [submissionStatus, setSubmissionStatus] = useState({
+  //   loading: false,
+  //   error: '',
+  //   success: ''
+  // });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,7 +44,8 @@ const IntroductionPage: React.FC = () => {
     
     // Basic validation
     if (!formData.name || !formData.mobileNumber || !formData.email) {
-      alert('Please fill in all required fields');
+      // You can add a local state for an error message here if needed
+      console.error('Please fill in all required fields.');
       return;
     }
 

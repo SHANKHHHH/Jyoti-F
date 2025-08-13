@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-// Import images from assets folder
+// Import all service images
 import luxuryToiletsImage from '../../assets/Luxury Toilets.jpg';
 import bioLoosImage from '../../assets/Bio Loos.png';
 import handwashBasinsImage from '../../assets/Handwash Basin.jpg';
@@ -9,57 +9,65 @@ import mensUrinalsImage from '../../assets/Mens Urinals.jpg';
 import coolingSystemsImage from '../../assets/Cooling System.jpg';
 import patioHeatersImage from '../../assets/Patio Heaters.jpg';
 
-interface ServiceOption {
+// Define the structure for a service option received from the API
+interface ServiceData {
   id: string;
-  title: string;
-  image: string;
+  name: string; // Corresponds to the 'title' in your old array
+  description?: string; // Assuming there might be a description
 }
 
 const ServiceSelectionPage: React.FC = () => {
+  const [services, setServices] = useState<ServiceData[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [showCustomService, setShowCustomService] = useState(false);
   const [customService, setCustomService] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const location = useLocation();
   const navigate = useNavigate();
 
+  // A mapping object to link service names from the API to local image imports
+  const serviceImageMap: { [key: string]: string } = {
+    'Luxury Toilets': luxuryToiletsImage,
+    'Bio Loo': bioLoosImage, // Correcting 'Bio Loos' to 'Bio Loo' based on your Postman data
+    'Handwash Basins': handwashBasinsImage,
+    "Men's Urinals": mensUrinalsImage,
+    'Cooling Systems': coolingSystemsImage,
+    'Patio Heaters': patioHeatersImage,
+  };
+  
   // Get data from previous page
   const { selectedEvents, customEvent, eventType } = location.state || {};
   
-  // Debug logs
+  // Debug log
   console.log('ServiceSelection - Received data:', { selectedEvents, customEvent, eventType });
 
-  const serviceOptions: ServiceOption[] = [
-    {
-      id: 'luxury-toilets',
-      title: 'Luxury Toilets',
-      image: luxuryToiletsImage
-    },
-    {
-      id: 'bio-loos',
-      title: 'Bio Loos',
-      image: bioLoosImage
-    },
-    {
-      id: 'handwash-basins',
-      title: 'Handwash Basins',
-      image: handwashBasinsImage
-    },
-    {
-      id: 'mens-urinals',
-      title: "Men's Urinals",
-      image: mensUrinalsImage
-    },
-    {
-      id: 'cooling-systems',
-      title: 'Cooling Systems',
-      image: coolingSystemsImage
-    },
-    {
-      id: 'patio-heaters',
-      title: 'Patio Heaters',
-      image: patioHeatersImage
-    }
-  ];
+  // useEffect hook to fetch services from the backend API when the component mounts
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/services');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        // Check if the API response is successful and contains data
+        if (result.success && result.data) {
+          setServices(result.data);
+        } else {
+          throw new Error('API response was not successful or data is missing.');
+        }
+      } catch (e: any) {
+        setError('Failed to fetch services. Please try again later.');
+        console.error('Error fetching services:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []); // The empty dependency array ensures this runs only once on mount
 
   const handleServiceToggle = (serviceId: string) => {
     setSelectedServices(prev => 
@@ -74,16 +82,17 @@ const ServiceSelectionPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    // Get selected service titles for better data passing
-    const selectedServiceTitles = selectedServices.map(serviceId => 
-      serviceOptions.find(service => service.id === serviceId)?.title
-    ).filter(Boolean);
+    // Get selected service names from the fetched data
+    const selectedServiceNames = selectedServices.map(serviceId => {
+      const service = services.find(s => s.id === serviceId);
+      return service ? service.name : null;
+    }).filter(Boolean) as string[];
 
     console.log('ServiceSelection - Passing data:', {
       selectedEvents,
       customEvent,
       eventType,
-      selectedServices: selectedServiceTitles
+      selectedServices: selectedServiceNames,
     });
 
     // Navigate to introduction page with all collected data
@@ -94,7 +103,7 @@ const ServiceSelectionPage: React.FC = () => {
         customEvent,
         eventType,
         // Data from service selection
-        selectedServices: selectedServiceTitles,
+        selectedServices: selectedServiceNames,
         selectedServiceIds: selectedServices,
         customService: customService.trim() || null,
         // Combined data for easy access
@@ -102,12 +111,29 @@ const ServiceSelectionPage: React.FC = () => {
           events: selectedEvents || [],
           customEvent: customEvent || null,
           eventType: eventType || null,
-          services: selectedServiceTitles || [],
+          services: selectedServiceNames || [],
           customService: customService.trim() || null
         }
       }
     });
   };
+
+  // --- Conditional Rendering for Loading and Error States ---
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-orange-500 font-semibold">Loading services...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-red-500 font-semibold">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
@@ -145,9 +171,10 @@ const ServiceSelectionPage: React.FC = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {serviceOptions.map((service) => (
+          {/* Use the fetched services for rendering */}
+          {services.map((service) => (
             <div
-              key={service.id}
+              key={service.id} // Use the unique ID from the API
               onClick={() => handleServiceToggle(service.id)}
               className={`relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg ${
                 selectedServices.includes(service.id)
@@ -158,8 +185,9 @@ const ServiceSelectionPage: React.FC = () => {
               {/* Image Container */}
               <div className="aspect-[4/3] bg-gray-300 flex items-center justify-center relative">
                 <img
-                  src={service.image}
-                  alt={service.title}
+                  // Get the image URL from the mapping object
+                  src={serviceImageMap[service.name] || 'https://placehold.co/400x300?text=Image+Not+Found'}
+                  alt={service.name}
                   className="w-full h-full object-cover"
                 />
                 
@@ -177,7 +205,7 @@ const ServiceSelectionPage: React.FC = () => {
 
               {/* Title */}
               <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                <h3 className="font-semibold text-sm">{service.title}</h3>
+                <h3 className="font-semibold text-sm">{service.name}</h3>
               </div>
             </div>
           ))}

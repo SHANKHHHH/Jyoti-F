@@ -14,12 +14,54 @@ const initialState = {
 
 const ContactPage: React.FC = () => {
   const [form, setForm] = useState(initialState);
+  const [submissionStatus, setSubmissionStatus] = useState({
+    loading: false,
+    error: '',
+    success: ''
+  });
 
-  // For a real app, implement onSubmit (API/email integration)
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Quote request submitted!");
-    setForm(initialState);
+    setSubmissionStatus({ loading: true, error: '', success: '' });
+
+    try {
+      // Send data to the backend API endpoint
+      const response = await fetch('http://localhost:3000/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form.');
+      }
+
+      setSubmissionStatus({
+        loading: false,
+        error: '',
+        success: 'Quote request submitted successfully!'
+      });
+
+      console.log('API Response:', result);
+      setForm(initialState); // Clear form on success
+
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      setSubmissionStatus({
+        loading: false,
+        error: error.message,
+        success: ''
+      });
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
   };
 
   return (
@@ -57,14 +99,33 @@ const ContactPage: React.FC = () => {
           className="w-full md:w-3/5 px-8 py-10 bg-white flex flex-col justify-center"
           onSubmit={handleSubmit}
         >
+          {/* Display submission status */}
+          {submissionStatus.loading && (
+            <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4" role="alert">
+              <p className="font-bold">Submitting...</p>
+            </div>
+          )}
+          {submissionStatus.error && (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+              <p className="font-bold">Error!</p>
+              <p>{submissionStatus.error}</p>
+            </div>
+          )}
+          {submissionStatus.success && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+              <p className="font-bold">Success!</p>
+              <p>{submissionStatus.success}</p>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block mb-1 text-xs font-semibold text-gray-600">Your name</label>
               <input
                 type="text"
+                name="name"
                 className="w-full border rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                 value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                onChange={handleInputChange}
                 required
                 placeholder="Abc"
               />
@@ -73,9 +134,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">Mobile Number</label>
               <input
                 type="tel"
+                name="mobile"
                 className="w-full border rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
                 value={form.mobile}
-                onChange={e => setForm(f => ({ ...f, mobile: e.target.value }))}
+                onChange={handleInputChange}
                 required
                 placeholder="+91 12345 67890"
                 pattern="^[\d\+\-\s]{10,}$"
@@ -84,9 +146,10 @@ const ContactPage: React.FC = () => {
             <div className="md:col-span-2">
               <label className="block mb-1 text-xs font-semibold text-gray-600">Type of Products</label>
               <select
+                name="type"
                 className="w-full border rounded py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
                 value={form.type}
-                onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
+                onChange={handleInputChange}
                 required
               >
                 <option value="">Select a product</option>
@@ -100,9 +163,10 @@ const ContactPage: React.FC = () => {
             <div>
               <label className="block mb-1 text-xs font-semibold text-gray-600">Pax Count</label>
               <select
+                name="pax"
                 className="w-full border rounded py-2 px-3 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
                 value={form.pax}
-                onChange={e => setForm(f => ({ ...f, pax: e.target.value }))}
+                onChange={handleInputChange}
                 required
               >
                 <option value="">Pax</option>
@@ -117,9 +181,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">Event Type</label>
               <input
                 type="text"
+                name="event"
                 className="w-full border rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 value={form.event}
-                onChange={e => setForm(f => ({ ...f, event: e.target.value }))}
+                onChange={handleInputChange}
                 required
                 placeholder="Wedding, Corporate, Exhibition, etc."
               />
@@ -128,9 +193,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">Start Date</label>
               <input
                 type="date"
+                name="startDate"
                 className="w-full border rounded py-2 px-3 focus:outline-none"
                 value={form.startDate}
-                onChange={e => setForm(f => ({ ...f, startDate: e.target.value }))}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -138,9 +204,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">End Date</label>
               <input
                 type="date"
+                name="endDate"
                 className="w-full border rounded py-2 px-3 focus:outline-none"
                 value={form.endDate}
-                onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -148,9 +215,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">Starting Time</label>
               <input
                 type="time"
+                name="startTime"
                 className="w-full border rounded py-2 px-3 focus:outline-none"
                 value={form.startTime}
-                onChange={e => setForm(f => ({ ...f, startTime: e.target.value }))}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -158,9 +226,10 @@ const ContactPage: React.FC = () => {
               <label className="block mb-1 text-xs font-semibold text-gray-600">Ending Time</label>
               <input
                 type="time"
+                name="endTime"
                 className="w-full border rounded py-2 px-3 focus:outline-none"
                 value={form.endTime}
-                onChange={e => setForm(f => ({ ...f, endTime: e.target.value }))}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -168,9 +237,10 @@ const ContactPage: React.FC = () => {
           <div className="mt-8 flex justify-center">
             <button
               type="submit"
-              className="bg-emerald-500 hover:bg-emerald-600 text-white px-10 py-2 rounded-lg font-semibold shadow-sm transition"
+              disabled={submissionStatus.loading}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white px-10 py-2 rounded-lg font-semibold shadow-sm transition disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Submit
+              {submissionStatus.loading ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </form>
