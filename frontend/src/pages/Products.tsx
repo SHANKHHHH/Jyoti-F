@@ -1,5 +1,9 @@
-// Products.tsx
+import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Star, Heart } from 'lucide-react';
 
+// Original local image imports restored.
+// NOTE: These images must be present at the specified paths for the code to run correctly.
 import ProductImg from '../assets/Product.jpg';
 import Men3Urinal from '../assets/3 MENS URINELS.png';
 import AirCooler from '../assets/AIR COOLER.png';
@@ -11,9 +15,6 @@ import ShowerCabin from '../assets/shower cabin.jpeg.jpg';
 import patioHeater from '../assets/patio heater.jpeg.jpg';
 import mistfan from '../assets/mist fan.jpeg.jpg';
 import AirWater from '../assets/AIRON WATER.png';
-import { Star, Heart } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export type Product = {
   id: number;
@@ -408,9 +409,31 @@ export function discountFilterFuncs(option: string) {
 }
 
 const ProductsPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [priceRange, setPriceRange] = useState<[number, number]>([30000, 60000]);
   const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
+  
+  // Set the category state from the URL on component load
+  useEffect(() => {
+    if (categoryParam && categories.includes(categoryParam)) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [categoryParam]);
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    // Update the URL search params when the category changes
+    if (category === 'All') {
+      searchParams.delete('category');
+      setSearchParams(searchParams);
+    } else {
+      setSearchParams({ category });
+    }
+  };
+
   const handleDiscountChange = (discount: string) => {
     setSelectedDiscounts((prev) =>
       prev.includes(discount)
@@ -449,7 +472,7 @@ const ProductsPage: React.FC = () => {
                         type="radio"
                         name="category"
                         checked={selectedCategory === category}
-                        onChange={() => setSelectedCategory(category)}
+                        onChange={() => handleCategoryChange(category)}
                         className="text-orange-500"
                       />
                       <span className="text-sm">{category}</span>
@@ -587,12 +610,12 @@ const ProductsPage: React.FC = () => {
                   </div>
                   {/* Wishlist Icon */}
                   <div className="absolute top-4 right-4 md:static">
-                    <Link
-                      to={`/products/${product.id}?action=wishlist`}
+                    <button
+                      onClick={() => console.log('Added to wishlist')}
                       className="p-2 hover:bg-gray-100 rounded-full"
                     >
                       <Heart className="w-5 h-5 text-gray-400 hover:text-red-500" />
-                    </Link>
+                    </button>
                   </div>
                 </div>
               ))}
