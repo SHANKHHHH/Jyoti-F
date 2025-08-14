@@ -1,5 +1,5 @@
 if (!import.meta.env.VITE_BACKEND_URL) {
-  throw new Error("VITE_BACKEND_URL is not defined in .env");
+  throw new Error("https://jyothi-enterprises-4q1d.onrender.com");
 }
 
 const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth`;
