@@ -235,7 +235,7 @@ export const products: Product[] = [
     originalPrice: 40500,
     rating: 4.4,
     reviews: 19,
-    category: 'Water Solutions',
+    category: 'Coolers',
     discount: '4% off',
     description: 'Portable water cooling and dispensing solution.',
     descriptions: [
