@@ -22,7 +22,7 @@ const offers: OfferItem[] = [
 ];
 
 const WhatWeOffer: React.FC = () => (
-  <section className="max-w-7xl mx-auto px-4 py-12 bg-gray-50">
+<section className="max-w-7xl mx-auto px-4 pt-6 pb-12 bg-gray-50">
     {/* Header */}
     <div className="mb-10 text-center">
       <div className="flex justify-center items-center gap-3 mb-2">

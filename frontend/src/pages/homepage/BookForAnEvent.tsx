@@ -23,7 +23,7 @@ const WhatOffer: React.FC = () => {
   };
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-16 sm:py-20 font-sans mt-20 sm:mt-24">
+<section className="max-w-6xl mx-auto px-4 py-16 sm:py-20 font-sans mb-12">
       {/* Header with Flame Icon */}
       <div className="mb-10 text-center">
         <div className="flex justify-center items-center gap-3 mb-4">
