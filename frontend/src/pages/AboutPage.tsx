@@ -64,20 +64,18 @@ const AboutPage: React.FC = () => {
 
         {/* WHY CHOOSE US */}
         <section className="mt-10">
-          <h3 className="text-2xl font-bold text-orange-400 mb-12 text-center tracking-wide">WHY CHOOSE US?</h3>
+  <h3 className="text-2xl font-bold text-orange-400 mb-12 text-center tracking-wide">WHY CHOOSE US?</h3>
 
-          {/* Images grid: just your great-looking designed images, large and beautiful */}
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <img src={QualityImg} alt="Quality" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-            <img src={ReliabilityImg} alt="Reliability" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-            <img src={EcoImg} alt="Eco-Friendly" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-          </div>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mt-8">
-            <img src={CompetitiveImg} alt="Competitive Pricing" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-            <img src={ExpImg} alt="Experience" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-            <img src={HygieneImg} alt="Hygiene" className="w-full max-h-64 object-contain rounded-2xl shadow" draggable={false} />
-          </div>
-        </section>
+  {/* Images grid: just your great-looking designed images, large and beautiful */}
+  <div className="max-w-5xl mx-auto grid grid-cols-1 gap-12">
+    <img src={QualityImg} alt="Quality" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+    <img src={ReliabilityImg} alt="Reliability" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+    <img src={EcoImg} alt="Eco-Friendly" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+    <img src={CompetitiveImg} alt="Competitive Pricing" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+    <img src={ExpImg} alt="Experience" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+    <img src={HygieneImg} alt="Hygiene" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+  </div>
+</section>
       </div>
     </div>
   );
