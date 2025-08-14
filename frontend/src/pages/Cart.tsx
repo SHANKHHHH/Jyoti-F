@@ -14,7 +14,7 @@ const CartPage: React.FC = () => {
   const getAmount = (item: any) => item.price * item.quantity;
 
   return (
-    // Add padding/margin top to account for fixed header height
+    // Add padding/margin top to account for fixed header heigh
     <div className="min-h-screen bg-gray-50 py-10 pt-20 md:pt-24">
       {/*      ^^^^^^^^^^^^^^^^^ Add pt-20 (or larger if needed for your header)   */}
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
