@@ -42,7 +42,7 @@ const EventSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/events');
+        const response = await fetch('https://jyothi-enterprises-4q1d.onrender.com/api/events');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

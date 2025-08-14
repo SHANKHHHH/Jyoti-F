@@ -196,7 +196,7 @@ const CheckOut: React.FC = () => {
     
     try {
       // Send data to the backend API endpoint
-      const response = await fetch('http://localhost:3000/api/contact/submit', {
+      const response = await fetch('https://jyothi-enterprises-4q1d.onrender.com/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

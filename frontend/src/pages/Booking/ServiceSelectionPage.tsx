@@ -47,7 +47,7 @@ const ServiceSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/services');
+        const response = await fetch('https://jyothi-enterprises-4q1d.onrender.com/api/services');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
