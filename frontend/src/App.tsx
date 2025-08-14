@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
 import ScrollToTop from './pages/ScrollToTop';
 
+// All the lazy imports remain the same
 const Hero = lazy(() => import('./pages/homepage/Hero'));
 const AboutSection = lazy(() => import('./pages/homepage/AboutSection'));
 const BookForAnEvent = lazy(() => import('./pages/homepage/BookForAnEvent'));
@@ -25,6 +26,20 @@ const ServiceSelectionPage = lazy(() => import('./pages/Booking/ServiceSelection
 const IntroductionPage = lazy(() => import('./pages/Booking/IntroductionPage'));
 const CheckOut = lazy(() => import('./pages/Booking/CheckOut'));
 
+// We create a new component to contain all the homepage sections
+function HomePage() {
+  return (
+    <>
+      <Hero />
+      <IconSection />
+      <BackBookNow />
+      <AboutSection />
+      <WhatOffer />
+      <BookForAnEvent />
+    </>
+  );
+}
+
 function AppContent() {
   const location = useLocation();
   const hideHeaderFooter = ['/signin', '/signup'].includes(location.pathname);
@@ -35,26 +50,20 @@ function AppContent() {
       <main className="flex-1">
         <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Hero />
-                  <IconSection />
-                  <BackBookNow />
-                  <AboutSection />
-                  <WhatOffer />
-                  <BookForAnEvent />
-                </>
-              }
-            />
+            {/* THIS IS THE KEY CHANGE: */}
+            {/* The root route (/) now shows the AboutPage */}
+            <Route path="/" element={<AboutPage />} />
+
+            {/* The original landing page is moved to the /home route */}
+            <Route path="/home" element={<HomePage />} />
+            
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/about" element={<AboutPage />} />
+
             {/* New booking flow routes */}
             <Route path="/event-selection" element={<EventSelectionPage />} />
             <Route path="/service-selection" element={<ServiceSelectionPage />} />
