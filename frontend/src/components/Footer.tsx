@@ -33,12 +33,17 @@ const Footer = () => (
         <div className="flex flex-col gap-6 text-left">
           <div>
             <h3 className="font-bold uppercase tracking-wider mb-2">Address</h3>
-            <p className="text-gray-300 leading-relaxed">
+            <a
+              href="https://maps.app.goo.gl/jSrJtLC6EkqZxWV17"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-amber-400 leading-relaxed transition"
+            >
               #46/2, Kaveri Layout, 1st Cross,<br />
               near Tirumala Dhaba,<br />
               Yelahanka, Uttarahalli Hobli,<br />
               Bengaluru, Karnataka 560097
-            </p>
+            </a>
           </div>
           <div>
             <h3 className="font-bold uppercase tracking-wider mb-2">Phone</h3>
