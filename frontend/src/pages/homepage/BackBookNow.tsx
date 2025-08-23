@@ -10,7 +10,7 @@ const BackBookNow: React.FC = () => {
   };
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image */}
       <img
         src={bgm}
@@ -22,8 +22,11 @@ const BackBookNow: React.FC = () => {
       {/* Semi-transparent Overlay for readability */}
       <div className="absolute inset-0 bg-black/40 z-10" />
 
-      {/* Foreground Content (NO background box) */}
-      <div className="relative z-20 flex flex-col items-center px-4">
+      {/* Foreground Content, absolutely positioned lower */}
+      <div
+        className="absolute left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center px-4"
+        style={{ top: "65%", width: "100%", maxWidth: "800px" }} // 👈 push down with top: 65%
+      >
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 text-center tracking-tight">
           Bring a Premium and Hygiene Experience to Your Event
         </h1>
