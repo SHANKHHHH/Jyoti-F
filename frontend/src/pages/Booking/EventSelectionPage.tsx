@@ -6,7 +6,7 @@ import vvipImage from "../../assets/VVIP.jpg";
 import festivalImage from "../../assets/HOLI.jpg";
 import socialImage from "../../assets/VVI.png";
 
-// Define the structure for an event option received from the API
+// Define the structure for an event option
 interface EventData {
   id: string;
   name: string;
@@ -18,7 +18,6 @@ const EventSelectionPage: React.FC = () => {
   const [showCustomEvent, setShowCustomEvent] = useState(false);
   const [customEvent, setCustomEvent] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,31 +37,19 @@ const EventSelectionPage: React.FC = () => {
   
   console.log('EventSelection - Received eventType:', eventType);
 
-  // useEffect hook to fetch events from the backend API when the component mounts
+  // useEffect hook to set static events instead of fetching from API
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch('https://jyothi-enterprises-4q1d.onrender.com/api/events');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        // Check if the API response is successful and contains data
-        if (result.success && result.data) {
-          setEvents(result.data);
-        } else {
-          throw new Error('API response was not successful or data is missing.');
-        }
-      } catch (e: any) {
-        setError('Failed to fetch events. Please try again later.');
-        console.error('Error fetching events:', e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []); // The empty dependency array ensures this runs only once on mount
+    const dummyEvents: EventData[] = [
+      { id: "1", name: "VVIP Events (Conferences & Rallys)" },
+      { id: "2", name: "Festivals & Concerts" },
+      { id: "3", name: "Social & Corporate" },
+      { id: "4", name: "Amusement Parks, Fairs & Carnivals" },
+      { id: "5", name: "Sports" },
+      { id: "6", name: "Weddings & Family Gatherings" },
+    ];
+    setEvents(dummyEvents);
+    setLoading(false);
+  }, []);
 
   const handleEventToggle = (eventId: string) => {
     setSelectedEvents(prev =>
@@ -73,7 +60,7 @@ const EventSelectionPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    // Get selected event names from the fetched data
+    // Get selected event names
     const selectedEventNames = selectedEvents.map(eventId => {
       const event = events.find(e => e.id === eventId);
       return event ? event.name : null;
@@ -90,24 +77,16 @@ const EventSelectionPage: React.FC = () => {
       state: { 
         selectedEvents: selectedEventNames,
         customEvent: customEvent.trim() || null,
-        eventType // This is the crucial fix
+        eventType 
       } 
     });
   };
 
-  // --- Conditional Rendering for Loading and Error States ---
+  // --- Conditional Rendering for Loading ---
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <p className="text-xl text-orange-500 font-semibold">Loading events...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-xl text-red-500 font-semibold">{error}</p>
       </div>
     );
   }

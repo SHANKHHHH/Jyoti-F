@@ -1,12 +1,11 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type CartAction = "buy" | "rent" | "wishlist";
+export type CartAction = "rent" ;
 
 export type CartItem = {
   id: number;
   name: string;
   price: number;
-  originalPrice: number;
   image: string;
   action: CartAction;
   quantity: number;

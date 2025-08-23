@@ -14,7 +14,6 @@ const WhatOffer = lazy(() => import('./pages/homepage/WhatWeOffer'));
 const SignIn = lazy(() => import('./pages/SignInPage'));
 const SignUp = lazy(() => import('./pages/SignUpPage'));
 const ProductsPage = lazy(() => import('./pages/Products'));
-const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
 const CartPage = lazy(() => import('./pages/Cart'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -58,7 +57,6 @@ function AppContent() {
             <Route path="/home" element={<HomePage />} />
             
             <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:id" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/signin" element={<SignIn />} />

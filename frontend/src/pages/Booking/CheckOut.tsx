@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // Import your service images
-import luxuryToiletsImage from '../../assets/Luxury Toilets.jpg';
-import bioLoosImage from '../../assets/Bio Loos.png';
+import luxuryToiletsImage from '../../assets/LuxuryToilets.jpg';
+import bioLoosImage from '../../assets/BioLoos.png';
 import handwashBasinsImage from '../../assets/Handwash Basin.jpg';
-import mensUrinalsImage from '../../assets/Mens Urinals.jpg';
+import mensUrinalsImage from '../../assets/MensUrinals.jpg';
 import coolingSystemsImage from '../../assets/Cooling System.jpg';
-import patioHeatersImage from '../../assets/Patio Heaters.jpg';
+import patioHeatersImage from '../../assets/PatioHeaters.jpg';
 
 // Import event images
 import vvipImage from "../../assets/VVIP.jpg";

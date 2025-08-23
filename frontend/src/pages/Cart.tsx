@@ -37,9 +37,7 @@ const CartPage: React.FC = () => {
                     <span className="text-yellow-500 font-semibold">{item.discount}</span>
                   </div>
                   <div className="flex gap-2 items-baseline mb-1">
-                    <span className="text-2xl text-green-600 font-bold">₹{item.price.toLocaleString()}</span>
-                    <span className="line-through text-gray-500 text-lg">₹{item.originalPrice.toLocaleString()}</span>
-                  </div>
+                    <span className="text-2xl text-green-600 font-bold">₹{item.price.toLocaleString()}</span>                  </div>
                   <div className="text-xs text-gray-400 mb-1">Limited Time Offer</div>
                   <div className="text-xs text-gray-500">Bestseller for the past 3 months</div>
                   <div className="mt-1 text-sm">
@@ -58,9 +56,6 @@ const CartPage: React.FC = () => {
                 <div className="flex flex-col items-end gap-2 ml-2">
                   <button onClick={() => removeFromCart(item.id, item.action)} className="hover:text-red-600">
                     <Trash2 size={22} />
-                  </button>
-                  <button disabled className="text-gray-300 cursor-not-allowed">
-                    <Edit2 size={20} />
                   </button>
                 </div>
               </div>

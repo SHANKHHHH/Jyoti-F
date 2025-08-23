@@ -8,7 +8,7 @@ import { useCart } from '../contexts/CartContext';
 // The 'ABOUT' page is now at the root '/', and the main landing page is at '/home'.
 const navItems = [
   { label: "PRODUCTS", anchor: "/products", icon: null },
-  { label: "EN", anchor: "#", icon: null },
+//   { label: "EN", anchor: "#", icon: null },
   { label: "SIGN IN", anchor: "/signin", icon: User },
   { label: "CART", anchor: "/cart", icon: ShoppingCart },
   { label: "ABOUT", anchor: "/", icon: null },
