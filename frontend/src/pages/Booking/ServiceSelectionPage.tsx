@@ -1,43 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-// Import all service images
-import luxuryToiletsImage from "../../assets/LuxuryToilets.jpg";
-import bioLoosImage from "../../assets/BioLoos.png";
-import handwashBasinsImage from "../../assets/Handwash Basin.jpg";
-import mensUrinalsImage from "../../assets/MensUrinals.jpg";
-import coolingSystemsImage from "../../assets/Cooling System.jpg";
-import patioHeatersImage from "../../assets/PatioHeaters.jpg";
 
 // Define the structure for a service option
 interface ServiceData {
   id: string;
   name: string;
   description?: string;
-  image: string;
+  image?: string;
 }
 
-// ✅ Local static service list (instead of fetching from API)
-const staticServices: ServiceData[] = [
-  { id: "1", name: "Luxury Toilets", image: luxuryToiletsImage },
-  { id: "2", name: "Bio Loo", image: bioLoosImage },
-  { id: "3", name: "Handwash Basins", image: handwashBasinsImage },
-  { id: "4", name: "Men's Urinals", image: mensUrinalsImage },
-  { id: "5", name: "Cooling Systems", image: coolingSystemsImage },
-  { id: "6", name: "Patio Heaters", image: patioHeatersImage },
-];
-
 const ServiceSelectionPage: React.FC = () => {
-  const [services] = useState<ServiceData[]>(staticServices);
+  const [services, setServices] = useState<ServiceData[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [showCustomService, setShowCustomService] = useState(false);
   const [customService, setCustomService] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   // Get data from previous page
   const { selectedEvents, customEvent, eventType } = location.state || {};
+
+  // Fetch services from API
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(
+          "https://jyothi-enterprises-4q1d.onrender.com/api/services"
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          setServices(data.services);
+        } else {
+          setError("Failed to fetch services");
+        }
+      } catch (err) {
+        setError("Something went wrong while fetching services");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleServiceToggle = (serviceId: string) => {
     setSelectedServices((prev) =>
@@ -74,6 +82,24 @@ const ServiceSelectionPage: React.FC = () => {
       },
     });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-orange-500 font-semibold">
+          Loading services...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-xl text-red-500 font-semibold">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
@@ -131,9 +157,12 @@ const ServiceSelectionPage: React.FC = () => {
               }`}
             >
               {/* Image Container */}
-              <div className="aspect-[4/3] bg-gray-300 flex items-center justify-center relative">
+              <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center relative">
                 <img
-                  src={service.image}
+                  src={
+                    service.image ||
+                    "https://placehold.co/400x300?text=No+Image"
+                  }
                   alt={service.name}
                   className="w-full h-full object-cover"
                 />
