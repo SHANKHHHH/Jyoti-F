@@ -8,17 +8,25 @@ import AirOnTowerAC1 from "../assets/_AIRONTOWERAC(2).png";
 import AirOnTowerAC2 from "../assets/_AIRONTOWERAC.png";
 import AirOnTowerCooler from "../assets/_AIRONTOWERAIRCOOLER.png";
 import AirCooler from "../assets/AIRCOOLER.png";
-import AironWater from "../assets/AIRONWATER.png";
+// import AironWater from "../assets/AIRONWATER.png";
 import MISTFANS1 from "../assets/MISTFANS1.png";
-import ductac from "../assets/ductac.jpeg.jpg";
+import ductac from "../assets/ductac.png";
+import Pedestal from "../assets/Pedestal Fan.png";
 
 import MensUrinals from "../assets/3MENSURINELS.png";
+import Hi from "../assets/Bio Loo - Hi Tech Wc With Health Faucet.png"
+
+import BioLogo from "../assets/Bio Loo - Logo.png";
+import AirLogo from "../assets/AIR ON Logo.png"
 
 import BioLooMainsIWC1 from "../assets/biolooportabletoiletmainsconnectioniwc-1.png";
-import BioLooMainsIWC2 from "../assets/biolooportabletoiletmainsconnectioniwc-2.png";
-import BioLooMainsIWC3 from "../assets/biolooportabletoiletmainsconnectioniwc-3.png";
-import BioLooMainsWC1 from "../assets/biolooportabletoiletmainsconnectionwc-1.png";
-import BioLooMainsWC2 from "../assets/biolooportabletoiletmainsconnectionwc-2.png";
+// import BioLooMainsIWC2 from "../assets/biolooportabletoiletmainsconnectioniwc-2.png";
+// import BioLooMainsIWC3 from "../assets/biolooportabletoiletmainsconnectioniwc-3.png";
+// import BioLooMainsWC1 from "../assets/biolooportabletoiletmainsconnectionwc-1.png";
+// import BioLooMainsWC2 from "../assets/biolooportabletoiletmainsconnectionwc-2.png";
+
+import Handicap from "../assets/BIO LOO handicap Toilet.png";
+import Handicap1 from "../assets/Bio Loo - Handicap Toilet.png"
 
 import BioLooPrimeFemale1 from "../assets/BIOLOOPRIMELUXURYFEMALECONTAINER(1).png";
 import BioLooPrimeFemale2 from "../assets/BIOLOOPRIMELUXURYFEMALECONTAINER(2).png";
@@ -35,7 +43,7 @@ import BioLooPrimeMale4 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(4).png";
 import BioLooPrimeMale5 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(5).png";
 import BioLooPrimeMale6 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(6).png";
 import BioLooPrimeMale7 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(7).png";
-import BioLooPrimeMalePlus from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+.png";
+// import BioLooPrimeMalePlus from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+.png";
 
 import BioLooShower1 from "../assets/BIOLOOSHOWERCABIN(1).png";
 import BioLooShower2 from "../assets/BIOLOOSHOWERCABIN(2).png";
@@ -43,23 +51,20 @@ import BioLooShower3 from "../assets/BIOLOOSHOWERCABIN(3).png";
 import BioLooShowerMain from "../assets/BIOLOOSHOWERCABIN.png";
 
 import BioMensUrinal1 from "../assets/BIOMENSURINALS3IN1(1).png";
-import BioMensUrinal2 from "../assets/BIOMENSURINALS3IN1(2).png";
-import BioMensUrinal3 from "../assets/BIOMENSURINALS3IN1.png";
+// import BioMensUrinal2 from "../assets/BIOMENSURINALS3IN1(2).png";
+// import BioMensUrinal3 from "../assets/BIOMENSURINALS3IN1.png";
 
 import PatioHeater1 from "../assets/PATIOHEATER1.png";
-import PatioHeater2 from "../assets/PATIOHEATER2.png";
-import PatioHeater3 from "../assets/PATIOHEATER3.png";
+// import PatioHeater2 from "../assets/PATIOHEATER2.png";
+// import PatioHeater3 from "../assets/PATIOHEATER3.png";
 
 import PMC1 from "../assets/PMC-1.png";
 import PMC2 from "../assets/PMC-2.png";
 import PMC3 from "../assets/PMC-3.png";
 import PMC4 from "../assets/PMC4.png";
 
-import FireExt1 from "../assets/FIREEXTINGUISHER1.png";
-import FireExt2 from "../assets/FIREEXTINGUISHER2.png";
 import FireExt3 from "../assets/FIREEXTINGUISHER3.png";
-import FireExtNitrogen from "../assets/fireextinguishernitrogen.jpeg.jpg";
-
+import Fire from "../assets/Fire Extinguisher CO2 GAS.png";
 // Product type
 export type Product = {
   id: string;
@@ -101,26 +106,26 @@ export const products: Product[] = [
     ],
     image: [BioLooPrimeMale1, BioLooPrimeMale2, BioLooPrimeMale3],
   },
-  {
-    id: "10bf0722-cb7e-4919-939d-ca9eec02dbb3",
-    name: "Portable AC",
-    price: 4500,
-    rating: 5,
-    reviews: 23,
-    category: "Containers",
-    description: "SPECIFICATIONS",
-    descriptions: [
-      "Capacity: 1 Ton",
-      "Coverage Area: Suitable for rooms up to 10 ft x 12 ft (120 sq. ft).",
-      "Condenser Type: Copper condenser for efficient cooling.",
-      "Power Consumption: 1404 W",
-      "Cooling Technology: Hydrophilic golden fins for better performance and durability.",
-      "Hygiene Features: Anti-bacterial silver coating for healthy air.",
-      "Safety Feature: Anti-freeze thermostat for protection.",
-      "Refrigerant: R410A eco-friendly refrigerant.",
-    ],
-    image: [AirOnTowerAC1, AirOnTowerAC2],
-  },
+  // {
+  //   id: "10bf0722-cb7e-4919-939d-ca9eec02dbb3",
+  //   name: "Portable AC",
+  //   price: 4500,
+  //   rating: 5,
+  //   reviews: 23,
+  //   category: "Containers",
+  //   description: "SPECIFICATIONS",
+  //   descriptions: [
+  //     "Capacity: 1 Ton",
+  //     "Coverage Area: Suitable for rooms up to 10 ft x 12 ft (120 sq. ft).",
+  //     "Condenser Type: Copper condenser for efficient cooling.",
+  //     "Power Consumption: 1404 W",
+  //     "Cooling Technology: Hydrophilic golden fins for better performance and durability.",
+  //     "Hygiene Features: Anti-bacterial silver coating for healthy air.",
+  //     "Safety Feature: Anti-freeze thermostat for protection.",
+  //     "Refrigerant: R410A eco-friendly refrigerant.",
+  //   ],
+  //   image: [AirOnTowerAC1, AirOnTowerAC2],
+  // },
   {
     id: "153a5953-eac5-4b8a-b546-16337b37ba45",
     name: "Pedestal Fan",
@@ -138,7 +143,7 @@ export const products: Product[] = [
       "Oscillation: 70° oscillating fan for wide air coverage.",
       "Weight: Gross weight approximately 25 kgs.",
     ],
-    image: [MISTFANS1, MISTFANS1],
+    image: [Pedestal],
   },
   {
     id: "18bccb6d-c31e-49d0-8d5d-91e959c2b403",
@@ -157,7 +162,7 @@ export const products: Product[] = [
       "Oscillation: 70° oscillating fan for wide air coverage.",
       "Weight: Gross weight approximately 25 kgs.",
     ],
-    image: [MISTFANS1, MISTFANS1],
+    image: [MISTFANS1],
   },
   {
     id: "1959b7e4-20d4-4244-9f46-461f430e22f1",
@@ -223,7 +228,6 @@ export const products: Product[] = [
     ],
     image: [
       BioLooPrimeFemale1,
-      BioLooPrimeFemale2,
       BioLooPrimeFemale3,
       BioLooPrimeFemale4,
       BioLooPrimeFemale5,
@@ -246,7 +250,7 @@ export const products: Product[] = [
       "Usage: Hygienic and user-friendly for various applications.",
       "Value Added: Low-maintenance, durable, and sustainable sanitation option.",
     ],
-    image: [BioLooMainsIWC2, BioLooMainsIWC3],
+    image: [Hi],
   },
   {
     id: "43921a8e-c04c-4d62-acc5-e7ae94c38462",
@@ -268,7 +272,7 @@ export const products: Product[] = [
       "Water Requirement: 200 litres of fresh water with minimum 200-litre drum.",
       "Value Added: Luxury interiors, premium lighting, aromatic diffusers, and modern facilities.",
     ],
-    image: [BioLooMainsIWC2, BioLooMainsIWC3, BioLooMainsWC1, BioLooMainsWC2],
+    image: [BioLooPrimeFemale2],
   },
   {
     id: "44b109ea-e93d-4a63-a99c-35d1acf9d542",
@@ -288,7 +292,7 @@ export const products: Product[] = [
       "Application: Suitable for homes, offices, factories, vehicles, and public spaces.",
       "Value Added: Provides quick response to fire hazards ensuring safety and protection.",
     ],
-    image: [FireExt1, FireExt2, FireExt3],
+    image: [Fire],
   },
   {
     id: "5695b7b7-6cf4-4fb1-9405-92a11e4312e5",
@@ -316,7 +320,6 @@ export const products: Product[] = [
       BioLooPrimeMale5,
       BioLooPrimeMale6,
       BioLooPrimeMale7,
-      BioLooPrimeMalePlus,
     ],
   },
   {
@@ -345,7 +348,7 @@ export const products: Product[] = [
   },
   {
     id: "59ff7f01-89fa-4c40-a4a6-d4316b1d951a",
-    name: "Bio Loo Handicap Restroom",
+    name: "Bio Loo Handicap Toilet",
     price: 5000,
     rating: 4.5,
     reviews: 23,
@@ -359,7 +362,7 @@ export const products: Product[] = [
       "Hygiene: Includes proper ventilation, handwash facility, and dustbin.",
       "Value Added: Durable, low-maintenance, eco-friendly sanitation solution for differently-abled users.",
     ],
-    image: [BioLooMainsIWC2, BioLooMainsIWC3],
+    image: [Handicap1, Handicap],
   },
   {
     id: "8ca418c7-c129-4d2e-a825-985b3b42edce",
@@ -380,7 +383,7 @@ export const products: Product[] = [
       "Build Quality: Stainless steel / powder-coated body for durability and weather resistance.",
       "Mobility: Fitted with smooth-rolling wheels for easy relocation.",
     ],
-    image: [PatioHeater1, PatioHeater2, PatioHeater3],
+    image: [PatioHeater1],
   },
   {
     id: "a3c056e3-fdec-44f4-bf13-b953c0605f64",
@@ -400,7 +403,7 @@ export const products: Product[] = [
       "Dimensions: 3.6 ft x 2.2 ft x 5.3 ft (height).",
       "Weight: Gross weight approximately 55 kg.",
     ],
-    image: [AironWater, AirCooler],
+    image: [AirCooler],
   },
   {
     id: "b1acc26b-678a-416f-95bd-4fa941d7d7e1",
@@ -419,7 +422,7 @@ export const products: Product[] = [
       "Application: Ideal for events, construction sites, public gatherings, and outdoor setups.",
       "Value Added: Low-maintenance, odor-free, and environmentally friendly sanitation solution.",
     ],
-    image: [BioMensUrinal1, BioMensUrinal2, BioMensUrinal3],
+    image: [BioMensUrinal1],
   },
   {
     id: "b75c3119-dfc1-41da-ab1d-cc89866aa7c4",
@@ -458,7 +461,7 @@ export const products: Product[] = [
       "Applications: Ideal for laboratories, data centers, electrical rooms, and sensitive equipment areas.",
       "Value Added: Eco-friendly, efficient, and reliable firefighting solution.",
     ],
-    image: [FireExtNitrogen],
+    image: [FireExt3],
   },
   {
     id: "e42cf554-56ad-4c3e-9052-24f69b3a97ae",
@@ -501,7 +504,7 @@ export const products: Product[] = [
       "Build Quality: Durable, hygienic, and easy-to-clean body for long-term use.",
       "Value Added: Provides a private, comfortable, and eco-friendly bathing solution anywhere.",
     ],
-    image: [BioLooShower1, BioLooShower2, BioLooShower3, BioLooShowerMain],
+    image: [BioLooShower2, BioLooShower3, BioLooShowerMain],
   },
   {
     id: "fa50d3bf-060e-4739-abc7-411ca43c5cd0",
@@ -528,15 +531,12 @@ export const products: Product[] = [
 const ProductsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   // Filter state: all | bio | airon
   const [filter, setFilter] = useState<"all" | "bio" | "airon">("all");
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
-
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
   };
-
   // Filter products according to selected filter
   const filteredProducts = products.filter((product) => {
     if (filter === "bio") {
@@ -553,7 +553,6 @@ const ProductsPage: React.FC = () => {
     }
     return true; // all items
   });
-
   // Image slider handlers
   const handlePrevImage = (id: string, images: string[]) => {
     setImageIndexes((prev) => ({
@@ -561,14 +560,12 @@ const ProductsPage: React.FC = () => {
       [id]: prev[id] && prev[id] > 0 ? prev[id] - 1 : images.length - 1,
     }));
   };
-
   const handleNextImage = (id: string, images: string[]) => {
     setImageIndexes((prev) => ({
       ...prev,
       [id]: prev[id] !== undefined && prev[id] < images.length - 1 ? prev[id] + 1 : 0,
     }));
   };
-
   const handleRentClick = (product: Product) => {
     addToCart({
       id: product.id,
@@ -582,44 +579,60 @@ const ProductsPage: React.FC = () => {
     });
     navigate("/cart");
   };
-
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Filter UI */}
-        <div className="mb-6 flex gap-4 justify-center">
+        {/* Filter UI replaced by logos */}
+        <div className="mb-6 flex gap-6 justify-center items-center">
+          {/* All filter: text */}
           <button
             onClick={() => handleFilterChange("all")}
-            className={`px-4 py-2 rounded font-medium transition-colors ${
-              filter === "all"
-                ? "bg-green-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-green-50"
-            }`}
+            className={`rounded p-1 transition border-2 ${
+              filter === "all" ? "border-green-600" : "border-transparent"
+            } hover:border-green-400`}
+            aria-label="All Products"
           >
-            All
+            <span
+              className={`font-semibold text-gray-700 ${
+                filter === "all" ? "text-green-600" : ""
+              }`}
+            >
+              All
+            </span>
           </button>
+
+          {/* Bio logo filter */}
           <button
             onClick={() => handleFilterChange("bio")}
-            className={`px-4 py-2 rounded font-medium transition-colors ${
-              filter === "bio"
-                ? "bg-green-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-green-50"
-            }`}
+            className={`rounded p-1 transition border-2 ${
+              filter === "bio" ? "border-green-600" : "border-transparent"
+            } hover:border-green-400`}
+            aria-label="Bio Loos"
           >
-            Bio Loos
+            <img
+              src={BioLogo}
+              alt="Bio Loos Logo"
+              className="h-10 w-auto object-contain"
+              style={{ filter: filter === "bio" ? "none" : "grayscale(80%)" }}
+            />
           </button>
+
+          {/* Airon logo filter */}
           <button
             onClick={() => handleFilterChange("airon")}
-            className={`px-4 py-2 rounded font-medium transition-colors ${
-              filter === "airon"
-                ? "bg-green-600 text-white"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-green-50"
-            }`}
+            className={`rounded p-1 transition border-2 ${
+              filter === "airon" ? "border-green-600" : "border-transparent"
+            } hover:border-green-400`}
+            aria-label="Airon"
           >
-            Airon
+            <img
+              src={AirLogo}
+              alt="Airon Logo"
+              className="h-10 w-auto object-contain"
+              style={{ filter: filter === "airon" ? "none" : "grayscale(80%)" }}
+            />
           </button>
         </div>
-
         {/* Products grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-6">
           {filteredProducts.map((product) => (
@@ -637,10 +650,9 @@ const ProductsPage: React.FC = () => {
                     className="absolute left-2 z-10 bg-white/80 rounded-full p-1"
                     style={{ top: "50%", transform: "translateY(-50%)" }}
                   >
-                    &#8249;
+                    ‹
                   </button>
                 )}
-
                 {/* Display current image */}
                 <img
                   src={product.image[imageIndexes[product.id] ?? 0]}
@@ -654,7 +666,6 @@ const ProductsPage: React.FC = () => {
                     objectFit: "cover",
                   }}
                 />
-
                 {/* Right Arrow */}
                 {product.image.length > 1 && (
                   <button
@@ -663,10 +674,9 @@ const ProductsPage: React.FC = () => {
                     className="absolute right-2 z-10 bg-white/80 rounded-full p-1"
                     style={{ top: "50%", transform: "translateY(-50%)" }}
                   >
-                    &#8250;
+                    ›
                   </button>
                 )}
-
                 {/* Dots */}
                 {product.image.length > 1 && (
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
@@ -674,18 +684,18 @@ const ProductsPage: React.FC = () => {
                       <div
                         key={idx}
                         className={`w-2 h-2 rounded-full ${
-                          idx === (imageIndexes[product.id] ?? 0) ? "bg-green-600" : "bg-white/60"
+                          idx === (imageIndexes[product.id] ?? 0)
+                            ? "bg-green-600"
+                            : "bg-white/60"
                         }`}
                       />
                     ))}
                   </div>
                 )}
               </div>
-
               {/* Product Details */}
               <div className="flex-1">
                 <h3 className="font-bold text-xl mb-2">{product.name}</h3>
-
                 {/* Rating */}
                 <div className="flex items-center space-x-2 mb-1">
                   <div className="flex items-center">
@@ -693,34 +703,41 @@ const ProductsPage: React.FC = () => {
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                          i < Math.floor(product.rating)
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300"
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">({product.reviews} reviews)</span>
+                  <span className="text-sm text-gray-600">
+                    ({product.reviews} reviews)
+                  </span>
                 </div>
-
-                <div className="text-sm text-gray-700 mb-3">{product.description}</div>
-
+                <div className="text-sm text-gray-700 mb-3">
+                  {product.description}
+                </div>
                 {/* Bullet point details */}
-                {Array.isArray(product.descriptions) && product.descriptions.length > 0 && (
-                  <div className="mb-4">
-                    <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-                      {product.descriptions.map((point, idx) => (
-                        <li key={idx}>{point}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
+                {Array.isArray(product.descriptions) &&
+                  product.descriptions.length > 0 && (
+                    <div className="mb-4">
+                      <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
+                        {product.descriptions.map((point, idx) => (
+                          <li key={idx}>{point}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 {/* Price */}
                 <div className="flex items-center space-x-3 mb-2">
-                  <span className="text-2xl font-bold text-green-600">₹{product.price.toLocaleString()}</span>
+                  <span className="text-2xl font-bold text-green-600">
+                    ₹{product.price.toLocaleString()}
+                  </span>
                 </div>
-
-                <p className="text-gray-600 text-sm mb-4">Exclusions(Labour Charges, Water and Suction Vehicle, Transportation extra over 30KM)</p>
-
+                <p className="text-gray-600 text-sm mb-4">
+                  Exclusions(Labour Charges, Water and Suction Vehicle,
+                  Transportation extra over 30KM)
+                </p>
                 {/* Action Buttons */}
                 <div className="flex flex-col md:flex-row gap-3 w-full">
                   <button
@@ -734,12 +751,13 @@ const ProductsPage: React.FC = () => {
             </div>
           ))}
           {filteredProducts.length === 0 && (
-            <p className="text-center text-gray-500 col-span-full">No products found for selected filter.</p>
+            <p className="text-center text-gray-500 col-span-full">
+              No products found for selected filter.
+            </p>
           )}
         </div>
       </div>
     </div>
   );
 };
-
 export default ProductsPage;
