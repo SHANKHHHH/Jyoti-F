@@ -9,6 +9,24 @@ interface ServiceData {
   image?: string;
 }
 
+// Import your static images
+import bioLoosImage from "../../assets/BioLoos.png";
+import coolingSystemsImage from "../../assets/Cooling System.jpg";
+import handwashBasinsImage from "../../assets/Handwash Basin.jpg";
+import luxuryToiletsImage from "../../assets/LuxuryToilets.jpg";
+import mensUrinalsImage from "../../assets/MensUrinals.jpg";
+import patioHeatersImage from "../../assets/PATIOHEATER1.png";
+
+// Map service names to images
+const serviceImages: Record<string, string> = {
+  "Bio Loos": bioLoosImage,
+  "Cooling Systems": coolingSystemsImage,
+  "Handwash Basins": handwashBasinsImage,
+  "Luxury Toilets": luxuryToiletsImage,
+  "Men's Urinals": mensUrinalsImage,
+  "Patio Heaters": patioHeatersImage,
+};
+
 const ServiceSelectionPage: React.FC = () => {
   const [services, setServices] = useState<ServiceData[]>([]);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -33,7 +51,13 @@ const ServiceSelectionPage: React.FC = () => {
         const data = await response.json();
 
         if (data.success) {
-          setServices(data.services);
+          const servicesWithImages = data.services.map((service: ServiceData) => ({
+            ...service,
+            image:
+              serviceImages[service.name] ||
+              "https://placehold.co/400x300?text=No+Image",
+          }));
+          setServices(servicesWithImages);
         } else {
           setError("Failed to fetch services");
         }
@@ -138,7 +162,8 @@ const ServiceSelectionPage: React.FC = () => {
           {eventType && (
             <div className="mt-4 p-3 bg-orange-100 rounded-lg inline-block">
               <p className="text-orange-700 text-sm">
-                Selected Event: <span className="font-semibold">{eventType}</span>
+                Selected Event:{" "}
+                <span className="font-semibold">{eventType}</span>
               </p>
             </div>
           )}
@@ -159,10 +184,7 @@ const ServiceSelectionPage: React.FC = () => {
               {/* Image Container */}
               <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center relative">
                 <img
-                  src={
-                    service.image ||
-                    "https://placehold.co/400x300?text=No+Image"
-                  }
+                  src={service.image}
                   alt={service.name}
                   className="w-full h-full object-cover"
                 />

@@ -45,7 +45,7 @@ import BioLooPrimeMale6 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(6).png";
 import BioLooPrimeMale7 from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+(7).png";
 // import BioLooPrimeMalePlus from "../assets/BIOLOOPRIMELUXURYMALECONTAINER+.png";
 
-import BioLooShower1 from "../assets/BIOLOOSHOWERCABIN(1).png";
+// import BioLooShower1 from "../assets/BIOLOOSHOWERCABIN(1).png";
 import BioLooShower2 from "../assets/BIOLOOSHOWERCABIN(2).png";
 import BioLooShower3 from "../assets/BIOLOOSHOWERCABIN(3).png";
 import BioLooShowerMain from "../assets/BIOLOOSHOWERCABIN.png";
