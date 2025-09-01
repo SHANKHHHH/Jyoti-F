@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
 import ScrollToTop from './pages/ScrollToTop';
+import CarrersPage from './pages/CarrersPage';
 
 // All the lazy imports remain the same
 const Hero = lazy(() => import('./pages/homepage/Hero'));
@@ -67,6 +68,8 @@ function AppContent() {
             <Route path="/service-selection" element={<ServiceSelectionPage />} />
             <Route path="/introduction" element={<IntroductionPage />} />
             <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/careers" element={<CarrersPage />} />
+
           </Routes>
         </Suspense>
       </main>
