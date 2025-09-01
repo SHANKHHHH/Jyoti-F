@@ -571,11 +571,9 @@ const ProductsPage: React.FC = () => {
       id: product.id,
       name: product.name,
       price: product.price,
-      originalPrice: 0,
-      image: product.image || product,
+      image: product.image[imageIndexes[product.id] ?? 0],
       action: "rent",
       discount: "",
-      quantity: 1,
     });
     navigate("/cart");
   };
