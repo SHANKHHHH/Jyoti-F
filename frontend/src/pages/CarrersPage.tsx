@@ -9,7 +9,8 @@ interface Job {
     location: string;
     company: string;
     address: string;
-    contact: string[];
+    contact1: string[];
+    contact2: string[];
 }
 
 const jobs: Job[] = [
@@ -28,7 +29,8 @@ const jobs: Job[] = [
         location: "Bengaluru",
         company: "Jyoti Enterprises",
         address: "46/2, Kaveri Layout, 1st Cross near Tirumala Dhaba, Yelahanka Hobli, Bengaluru - 560097",
-        contact: ["+91-9900022300", "+91-7022253301"]
+        contact1: ["+91-7022253301"],
+        contact2: ["+91-9900022300"]
     },
     {
         title: "AC Technician",
@@ -47,7 +49,8 @@ const jobs: Job[] = [
         location: "Bengaluru",
         company: "Jyoti Enterprises",
         address: "46/2, Kaveri Layout, 1st Cross near Tirumala Dhaba, Yelahanka Hobli, Bengaluru - 560097",
-        contact: ["+91-9900022300", "+91-7022253301"]
+        contact1: ["+91-7022253301"],
+        contact2: ["+91-9900022300"]
     }
 ];
 
@@ -75,7 +78,7 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => (
         <p><strong>Location:</strong> {job.location}</p>
         <p><strong>Company:</strong> {job.company}</p>
         <p><strong>Address:</strong> {job.address}</p>
-        <p><strong>Contact:</strong> {job.contact.join(", ")}</p>
+        <p><strong>Contact:</strong> {job.contact1.join(", ")}</p>
         <div style={{
             marginTop: "16px",
             display: "flex",
@@ -91,7 +94,7 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => (
                     fontWeight: "bold",
                     cursor: "pointer"
                 }}
-                onClick={() => window.location.href = `tel:${job.contact}`}
+                onClick={() => window.location.href = `tel:${job.contact1}`}
             >
                 Apply Now
             </button>
