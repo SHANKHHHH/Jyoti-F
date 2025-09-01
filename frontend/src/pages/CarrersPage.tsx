@@ -96,7 +96,7 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => (
                 }}
                 onClick={() => window.location.href = `tel:${job.contact1}`}
             >
-                Apply Now
+                Contact Now
             </button>
         </div>
     </div>
