@@ -53,6 +53,7 @@ function AppContent() {
             {/* THIS IS THE KEY CHANGE: */}
             {/* The root route (/) now shows the AboutPage */}
             <Route path="/" element={<AboutPage />} />
+            <Route path="/about" element={<AboutPage />} />
 
             {/* The original landing page is moved to the /home route */}
             <Route path="/home" element={<HomePage />} />

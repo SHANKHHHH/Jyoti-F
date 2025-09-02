@@ -9,7 +9,7 @@ import { useCart } from '../contexts/CartContext';
 const navItems = [
   { label: "PRODUCTS", anchor: "/products", icon: null },
 //   { label: "EN", anchor: "#", icon: null },
-  { label: "SIGN IN", anchor: "/signin", icon: User },
+  { label: "SIGN OUT", anchor: "/signin", icon: User },
   { label: "CART", anchor: "/cart", icon: ShoppingCart },
   { label: "ABOUT", anchor: "/", icon: null },
   { label: "CONTACT", anchor: "/contact", icon: null }
@@ -19,7 +19,7 @@ const mobileItems = [
   { label: 'HOME', anchor: '/home' }, // This links to the main landing page
   { label: 'PRODUCTS', anchor: '/products' },
   { label: 'ABOUT US', anchor: '/' }, // This links to the about page
-  { label: 'SIGN IN', anchor: '/signin' },
+  { label: 'SIGN OUT', anchor: '/signin' },
   { label: 'CART', anchor: '/cart' },
   { label: 'CONTACT', anchor: '/contact' }
 ];
@@ -49,7 +49,7 @@ const Header = () => {
     setIsOpen(false);
   };
 
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     e.preventDefault();
     if (searchTerm.trim().length > 0) {
       navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
