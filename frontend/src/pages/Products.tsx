@@ -534,9 +534,16 @@ const ProductsPage: React.FC = () => {
   // Filter state: all | bio | airon
   const [filter, setFilter] = useState<"all" | "bio" | "airon">("all");
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
+  // New state for sort order: "asc" | "desc" | null (null means no sort by price)
+  const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc" | null>(null);
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
+    // Reset price sort order when filter changes
+    setPriceSortOrder(null);
   };
+
+
+
   // Define sort order for "all" filter
   const sortOrder: { [key: string]: number } = {
     "Bio Loo Portable Chemical toilet wc Lexus": 1,
@@ -563,6 +570,15 @@ const ProductsPage: React.FC = () => {
     }
     return true; // all items
   }).sort((a, b) => {
+    // First, apply price sorting if active
+    if (priceSortOrder) {
+      if (priceSortOrder === "asc") {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    }
+    // Otherwise, apply default sorting for "all" filter
     if (filter === "all") {
       const orderA = sortOrder[a.name] || 999;
       const orderB = sortOrder[b.name] || 999;
@@ -647,6 +663,22 @@ const ProductsPage: React.FC = () => {
               style={{ filter: filter === "airon" ? "none" : "grayscale(80%)" }}
             />
           </button>
+
+          {/* Price sort dropdown */}
+          <select
+            value={priceSortOrder || ""}
+            onChange={(e) => setPriceSortOrder(e.target.value === "" ? null : e.target.value as "asc" | "desc")}
+            className={`rounded p-2 transition border-2 ${
+              priceSortOrder ? "border-green-600 bg-green-50" : "border-gray-300"
+            } hover:border-green-400 font-semibold text-sm ${
+              priceSortOrder ? "text-green-600" : "text-gray-700"
+            }`}
+            aria-label="Sort by Price"
+          >
+            <option value="">Sort by Price</option>
+            <option value="asc">Price: Low to High ↑</option>
+            <option value="desc">Price: High to Low ↓</option>
+          </select>
         </div>
         {/* Products grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-6">
