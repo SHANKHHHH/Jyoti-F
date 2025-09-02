@@ -537,6 +537,14 @@ const ProductsPage: React.FC = () => {
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
   };
+  // Define sort order for "all" filter
+  const sortOrder: { [key: string]: number } = {
+    "Bio Loo Portable Chemical toilet wc Lexus": 1,
+    "Bio Loo Hi-Tech WC with health faucet": 2,
+    "Bio Loo Portable Chemical Toilet ECO": 3,
+    "Bio Loo Handicap Toilet": 4,
+  };
+
   // Filter products according to selected filter
   const filteredProducts = products.filter((product) => {
     if (filter === "bio") {
@@ -548,10 +556,19 @@ const ProductsPage: React.FC = () => {
     } else if (filter === "airon") {
       return (
         product.name.toLowerCase().includes("airon") ||
-        product.category.toLowerCase().includes("airon")
+        product.category.toLowerCase().includes("airon") ||
+        product.name.toLowerCase().includes("ac") ||
+        product.category.toLowerCase().includes("ac")
       );
     }
     return true; // all items
+  }).sort((a, b) => {
+    if (filter === "all") {
+      const orderA = sortOrder[a.name] || 999;
+      const orderB = sortOrder[b.name] || 999;
+      return orderA - orderB;
+    }
+    return 0; // no sort for other filters
   });
   // Image slider handlers
   const handlePrevImage = (id: string, images: string[]) => {
@@ -732,10 +749,6 @@ const ProductsPage: React.FC = () => {
                     ₹{product.price.toLocaleString()}
                   </span>
                 </div>
-                <p className="text-gray-600 text-sm mb-4">
-                  Exclusions(Labour Charges, Water and Suction Vehicle,
-                  Transportation extra over 30KM)
-                </p>
                 {/* Action Buttons */}
                 <div className="flex flex-col md:flex-row gap-3 w-full">
                   <button
