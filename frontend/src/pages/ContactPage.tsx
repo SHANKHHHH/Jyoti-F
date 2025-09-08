@@ -2,7 +2,9 @@ import React, { useState } from "react";
 
 const initialState = {
   name: "",
+  email: "",
   mobile: "",
+  gst: "",
   type: "",
   pax: "",
   event: "",
@@ -141,6 +143,29 @@ const ContactPage: React.FC = () => {
                 required
                 placeholder="+91 12345 67890"
                 pattern="^[\d\+\-\s]{10,}$"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-xs font-semibold text-gray-600">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                className="w-full border rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                value={form.email}
+                onChange={handleInputChange}
+                required
+                placeholder="your.email@example.com"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 text-xs font-semibold text-gray-600">GST Number (optional)</label>
+              <input
+                type="text"
+                name="gst"
+                className="w-full border rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                value={form.gst}
+                onChange={handleInputChange}
+                placeholder="22AAAAA0000A1Z5"
               />
             </div>
             <div className="md:col-span-2">

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useAuth } from "./AuthContext";
 
 export type CartAction = "rent" ;
 
@@ -22,7 +23,55 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const { user, isAuthenticated } = useAuth();
   const [cart, setCart] = useState<CartItem[]>([]);
+
+  // Load cart from localStorage when user changes
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const storedData = localStorage.getItem(`cart_${user.id}`);
+      if (storedData) {
+        try {
+          const parsed = JSON.parse(storedData);
+          const now = Date.now();
+          const sevenDays = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+          if (parsed.timestamp && (now - parsed.timestamp) < sevenDays) {
+            setCart(parsed.cart);
+          } else {
+            // Expired, remove from storage
+            localStorage.removeItem(`cart_${user.id}`);
+            setCart([]);
+          }
+        } catch (error) {
+          console.error("Error parsing cart from localStorage:", error);
+          localStorage.removeItem(`cart_${user.id}`);
+          setCart([]);
+        }
+      } else {
+        setCart([]); // Clear cart if no stored data for user
+      }
+    } else {
+      setCart([]); // Clear cart if not authenticated
+    }
+  }, [user, isAuthenticated]);
+
+  // Save cart to localStorage whenever cart changes and user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user && cart.length > 0) {
+      const dataToStore = {
+        cart,
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(`cart_${user.id}`, JSON.stringify(dataToStore));
+    } else if (isAuthenticated && user && cart.length === 0) {
+      // If cart is empty, still save with timestamp to track
+      const dataToStore = {
+        cart: [],
+        timestamp: Date.now(),
+      };
+      localStorage.setItem(`cart_${user.id}`, JSON.stringify(dataToStore));
+    }
+  }, [cart, user, isAuthenticated]);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
     setCart(prev => {

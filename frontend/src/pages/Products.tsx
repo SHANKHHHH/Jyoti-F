@@ -536,6 +536,9 @@ const ProductsPage: React.FC = () => {
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
   // New state for sort order: "asc" | "desc" | null (null means no sort by price)
   const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc" | null>(null);
+  // State for hover image modal
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [hoveredImagePosition, setHoveredImagePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
     // Reset price sort order when filter changes
@@ -609,6 +612,20 @@ const ProductsPage: React.FC = () => {
       discount: "",
     });
     navigate("/cart");
+  };
+
+  // Hover handlers for image modal
+  const handleImageHover = (imageSrc: string, event: React.MouseEvent) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setHoveredImage(imageSrc);
+    setHoveredImagePosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top - 10,
+    });
+  };
+
+  const handleImageLeave = () => {
+    setHoveredImage(null);
   };
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -704,7 +721,7 @@ const ProductsPage: React.FC = () => {
                 <img
                   src={product.image[imageIndexes[product.id] ?? 0]}
                   alt={product.name}
-                  className="w-[175.21px] h-[233.61px] object-cover rounded-lg"
+                  className="w-[175.21px] h-[233.61px] object-cover rounded-lg cursor-pointer"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -712,6 +729,8 @@ const ProductsPage: React.FC = () => {
                     maxHeight: "233.61px",
                     objectFit: "cover",
                   }}
+                  onMouseEnter={(e) => handleImageHover(product.image[imageIndexes[product.id] ?? 0], e)}
+                  onMouseLeave={handleImageLeave}
                 />
                 {/* Right Arrow */}
                 {product.image.length > 1 && (
@@ -800,6 +819,26 @@ const ProductsPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Hover Image Modal */}
+      {hoveredImage && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{
+            left: hoveredImagePosition.x,
+            top: hoveredImagePosition.y,
+            transform: "translateX(-50%)",
+          }}
+        >
+          <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-2">
+            <img
+              src={hoveredImage}
+              alt="Hovered Product"
+              className="w-64 h-64 object-cover rounded"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import { Trash2, Edit2 } from "lucide-react";
+import { products } from "./Products";
 
 const actionLabel = {
   buy: "",
@@ -10,13 +11,21 @@ const actionLabel = {
 };
 
 const CartPage: React.FC = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [savedDetails, setSavedDetails] = useState<{ name: string; email: string; phone: string } | null>(null);
+  const [gst, setGst] = useState("");
+  const [savedDetails, setSavedDetails] = useState<{ name: string; email: string; phone: string; gst: string } | null>(null);
+  const [rentedProducts, setRentedProducts] = useState<Set<string>>(new Set());
+
+  // Get available recommendations from existing products (not rented yet)
+  const availableRecommendations = products.filter(product => !rentedProducts.has(product.id));
+
+  // Show up to 3 recommendations
+  const recommendations = availableRecommendations.slice(0, 3);
 
   useEffect(() => {
     const details = localStorage.getItem("userDetails");
@@ -26,7 +35,7 @@ const CartPage: React.FC = () => {
   }, []);
 
   const handleSaveDetails = () => {
-    const details = { name, email, phone };
+    const details = { name, email, phone, gst };
     localStorage.setItem("userDetails", JSON.stringify(details));
     setSavedDetails(details);
   };
@@ -141,6 +150,13 @@ const CartPage: React.FC = () => {
                   onChange={(e) => setPhone(e.target.value)}
                   className="border rounded px-3 py-2"
                 />
+                <input
+                  type="text"
+                  placeholder="GST Number (optional)"
+                  value={gst}
+                  onChange={(e) => setGst(e.target.value)}
+                  className="border rounded px-3 py-2"
+                />
                 <button
                   onClick={handleSaveDetails}
                   className="bg-blue-600 text-white rounded px-4 py-2 font-medium hover:bg-blue-700"
@@ -154,8 +170,42 @@ const CartPage: React.FC = () => {
                   <p>Name: {savedDetails.name}</p>
                   <p>Email: {savedDetails.email}</p>
                   <p>Phone: {savedDetails.phone}</p>
+                  <p>GST: {savedDetails.gst}</p>
                 </div>
               )}
+            </div>
+
+            {/* Recommendation Section - Moved below saved details */}
+            <div className="mt-6 border-t pt-6">
+              <h3 className="text-lg font-semibold mb-4">Recommended for You</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {recommendations.map((product) => (
+                  <div key={product.id} className="flex items-center border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer">
+                    <img src={product.image[0]} alt={product.name} className="w-16 h-16 object-cover rounded mr-4" />
+                    <div className="flex-1">
+                      <p className="font-medium">{product.name}</p>
+                      <p className="text-green-600 font-bold">₹{product.price.toLocaleString()}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const rentItem = {
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          action: "rent" as const,
+                          image: product.image[0],
+                          discount: "",
+                        };
+                        addToCart(rentItem);
+                        setRentedProducts(prev => new Set(prev).add(rentItem.id));
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                    >
+                      Rent
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="flex justify-end items-center mt-10 gap-2">
               <button

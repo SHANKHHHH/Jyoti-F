@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { signup } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -12,9 +12,10 @@ export default function SignUpForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   // Initialize the navigation hook
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,11 +42,11 @@ export default function SignUpForm() {
 
     setLoading(true);
     try {
-      await signup(formData.email, formData.password, formData.confirmPassword);
+      await signUp(formData.email, formData.password, formData.confirmPassword);
       setSuccess("Account created successfully!");
-      
+
       // Redirect to the /home route after a successful signup
-      navigate('/home'); 
+      navigate('/home');
 
     } catch (err: any) {
       setError(err.message || "Signup failed.");

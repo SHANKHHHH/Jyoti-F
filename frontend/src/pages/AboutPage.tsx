@@ -148,12 +148,20 @@ const AboutPage: React.FC = () => {
         <section className="mt-10">
           <h3 className="text-2xl font-bold text-orange-400 mb-12 text-center tracking-wide">WHY CHOOSE US?</h3>
           <div className="max-w-5xl mx-auto grid grid-cols-1 gap-12">
-            <img src={QualityImg} alt="Quality" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
-            <img src={ReliabilityImg} alt="Reliability" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
-            <img src={EcoImg} alt="Eco-Friendly" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
-            <img src={CompetitiveImg} alt="Competitive Pricing" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
-            <img src={ExpImg} alt="Experience" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
-            <img src={HygieneImg} alt="Hygiene" className="w-full h-auto object-cover rounded-2xl shadow" draggable={false} />
+            {[QualityImg, ReliabilityImg, EcoImg, CompetitiveImg, ExpImg, HygieneImg].map((img, idx) => (
+              <Link
+                key={idx}
+                to="/home"
+                className="block rounded-2xl shadow overflow-hidden transform transition-transform hover:scale-105 hover:shadow-xl"
+              >
+                <img
+                  src={img}
+                  alt="Why Choose Us"
+                  className="w-full h-auto object-cover rounded-2xl"
+                  draggable={false}
+                />
+              </Link>
+            ))}
           </div>
         </section>
       </div>

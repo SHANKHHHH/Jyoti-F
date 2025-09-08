@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
-import { login } from "../../api/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,7 +9,8 @@ const SignInForm: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // ✅ Initialize navigation
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,12 +18,9 @@ const SignInForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const data = await login(email, password);
-      console.log("Login success:", data);
-      localStorage.setItem("token", data.token);
-
+      await signIn(email, password);
       // ✅ Redirect to homepage after successful login
-      navigate("/"); 
+      navigate("/");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -32,7 +30,9 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-      <img src="/logo.png" alt="Logo" className="mx-auto mb-4 w-20" />
+      <Link to="/">
+        <img src="/logo.png" alt="Logo" className="mx-auto mb-4 w-20 cursor-pointer" />
+      </Link>
       <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}

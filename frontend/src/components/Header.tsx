@@ -1,28 +1,12 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { Menu, X, Search, User, ShoppingCart } from 'lucide-react';
+import { Menu, X, Search, User, ShoppingCart, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
 
 // We update the routes to reflect the new structure:
 // The 'ABOUT' page is now at the root '/', and the main landing page is at '/home'.
-const navItems = [
-  { label: "PRODUCTS", anchor: "/products", icon: null },
-//   { label: "EN", anchor: "#", icon: null },
-  { label: "SIGN OUT", anchor: "/signin", icon: User },
-  { label: "CART", anchor: "/cart", icon: ShoppingCart },
-  { label: "ABOUT", anchor: "/", icon: null },
-  { label: "CONTACT", anchor: "/contact", icon: null }
-];
-
-const mobileItems = [
-  { label: 'HOME', anchor: '/home' }, // This links to the main landing page
-  { label: 'PRODUCTS', anchor: '/products' },
-  { label: 'ABOUT US', anchor: '/' }, // This links to the about page
-  { label: 'SIGN OUT', anchor: '/signin' },
-  { label: 'CART', anchor: '/cart' },
-  { label: 'CONTACT', anchor: '/contact' }
-];
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +14,7 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const { cart } = useCart();
+  const { isAuthenticated, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -105,62 +90,77 @@ const Header = () => {
           
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
-            {navItems.map((item) => {
-              if (item.label === "CART") {
-                return (
-                  <button
-                    key={item.label}
-                    onClick={() => navigate(item.anchor)}
-                    className={`relative flex items-center gap-1 font-semibold text-sm transition-colors hover:text-amber-500 ${
-                      scrolled ? 'text-gray-800' : 'text-white'
-                    }`}
-                  >
-                    <ShoppingCart size={18} />
-                    <span>{item.label}</span>
-                    {cart.length > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1.5 text-white">
-                        {cart.length}
-                      </span>
-                    )}
-                  </button>
-                );
-              }
-              
-              if (item.label === "EN") {
-                return (
-                  <button
-                    key={item.label}
-                    onClick={() => handleNavClick(item.anchor)}
-                    className={`flex items-center gap-2 hover:text-amber-500 font-semibold text-sm transition-colors ${
-                      scrolled ? 'text-gray-800' : 'text-white'
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                    <span className="inline-block align-middle">
-                      <svg width="19" height="13" viewBox="0 0 19 13" fill="none">
-                        <rect width="19" height="4.3" y="0" fill="#FF9933"/>
-                        <rect width="19" height="4.3" y="4.3" fill="#fff"/>
-                        <rect width="19" height="4.3" y="8.6" fill="#138808"/>
-                        <circle cx="9.5" cy="6.5" r="1.0" fill="none" stroke="#000088" strokeWidth="1" />
-                      </svg>
-                    </span>
-                  </button>
-                );
-              }
-              
-              return (
-                <button
-                  key={item.label}
-                  onClick={() => handleNavClick(item.anchor)}
-                  className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
-                    scrolled ? 'text-gray-800' : 'text-white'
-                  }`}
-                >
-                  {item.icon && <item.icon size={16} className="hidden lg:inline-block" />}
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
+            {/* PRODUCTS */}
+            <button
+              onClick={() => navigate('/products')}
+              className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                scrolled ? 'text-gray-800' : 'text-white'
+              }`}
+            >
+              <span>PRODUCTS</span>
+            </button>
+
+            {/* CART */}
+            <button
+              onClick={() => navigate('/cart')}
+              className={`relative flex items-center gap-1 font-semibold text-sm transition-colors hover:text-amber-500 ${
+                scrolled ? 'text-gray-800' : 'text-white'
+              }`}
+            >
+              <ShoppingCart size={18} />
+              <span>CART</span>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1.5 text-white">
+                  {cart.length}
+                </span>
+              )}
+            </button>
+
+            {/* ABOUT */}
+            <button
+              onClick={() => navigate('/')}
+              className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                scrolled ? 'text-gray-800' : 'text-white'
+              }`}
+            >
+              <span>ABOUT</span>
+            </button>
+
+            {/* CONTACT */}
+            <button
+              onClick={() => navigate('/contact')}
+              className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                scrolled ? 'text-gray-800' : 'text-white'
+              }`}
+            >
+              <span>CONTACT</span>
+            </button>
+
+            {/* SIGN IN / SIGN OUT */}
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  signOut();
+                  navigate('/');
+                }}
+                className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                  scrolled ? 'text-gray-800' : 'text-white'
+                }`}
+              >
+                <LogOut size={16} className="hidden lg:inline-block" />
+                <span>SIGN OUT</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/signin')}
+                className={`flex items-center gap-1 hover:text-amber-500 font-semibold text-sm transition-colors ${
+                  scrolled ? 'text-gray-800' : 'text-white'
+                }`}
+              >
+                <User size={16} className="hidden lg:inline-block" />
+                <span>SIGN IN</span>
+              </button>
+            )}
           </nav>
         </div>
 
@@ -197,17 +197,80 @@ const Header = () => {
               className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
             />
           </form>
-          {mobileItems.map((item) => (
+          {/* HOME */}
+          <button
+            onClick={() => handleNavClick('/home')}
+            className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              scrolled ? 'text-gray-800' : 'text-white'
+            }`}
+          >
+            HOME
+          </button>
+
+          {/* PRODUCTS */}
+          <button
+            onClick={() => handleNavClick('/products')}
+            className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              scrolled ? 'text-gray-800' : 'text-white'
+            }`}
+          >
+            PRODUCTS
+          </button>
+
+          {/* ABOUT US */}
+          <button
+            onClick={() => handleNavClick('/')}
+            className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              scrolled ? 'text-gray-800' : 'text-white'
+            }`}
+          >
+            ABOUT US
+          </button>
+
+          {/* CART */}
+          <button
+            onClick={() => handleNavClick('/cart')}
+            className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              scrolled ? 'text-gray-800' : 'text-white'
+            }`}
+          >
+            CART
+          </button>
+
+          {/* CONTACT */}
+          <button
+            onClick={() => handleNavClick('/contact')}
+            className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+              scrolled ? 'text-gray-800' : 'text-white'
+            }`}
+          >
+            CONTACT
+          </button>
+
+          {/* SIGN IN / SIGN OUT */}
+          {isAuthenticated ? (
             <button
-              key={item.anchor}
-              onClick={() => handleNavClick(item.anchor)}
+              onClick={() => {
+                signOut();
+                navigate('/');
+                setIsOpen(false);
+              }}
               className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
                 scrolled ? 'text-gray-800' : 'text-white'
               }`}
             >
-              {item.label}
+              SIGN OUT
             </button>
-          ))}
+          ) : (
+            <button
+              onClick={() => handleNavClick('/signin')}
+              className={`flex items-center gap-2 text-base font-medium py-2 transition-colors text-left hover:text-amber-500 ${
+                scrolled ? 'text-gray-800' : 'text-white'
+              }`}
+            >
+              SIGN IN
+            </button>
+          )}
         </div>
       )}
     </header>

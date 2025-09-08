@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
+import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './pages/ScrollToTop';
 import CarrersPage from './pages/CarrersPage';
 
@@ -82,10 +83,12 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <CartProvider>
-        <ScrollToTop />
-        <AppContent />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <ScrollToTop />
+          <AppContent />
+        </CartProvider>
+      </AuthProvider>
     </Router>
   );
 }
