@@ -18,3 +18,11 @@
 - Animated popup appears after 1 second with yellow cartoonish warning
 - Popup can be closed by clicking the button or overlay
 - Used Tailwind CSS for styling and animations
+
+# TODO List for SignIn Page Header Addition
+
+## Pending Tasks
+- [x] Add header with logo to SignInPage.tsx that redirects to home on click
+- [x] Remove logo from SignInForm.tsx to avoid duplication
+- [ ] Test the signin page to verify header and navigation work correctly
+- [ ] Ensure styling is consistent with the page background

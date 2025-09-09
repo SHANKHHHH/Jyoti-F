@@ -30,9 +30,6 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-      <Link to="/">
-        <img src="/logo.png" alt="Logo" className="mx-auto mb-4 w-20 cursor-pointer" />
-      </Link>
       <h2 className="text-2xl font-semibold mb-6">Sign In</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
