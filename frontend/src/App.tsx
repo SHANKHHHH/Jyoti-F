@@ -5,7 +5,10 @@ import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './pages/ScrollToTop';
+
 import CarrersPage from './pages/CarrersPage';
+import BlogPage from './pages/BlogPage';
+
 
 // All the lazy imports remain the same
 const Hero = lazy(() => import('./pages/homepage/Hero'));
@@ -71,7 +74,7 @@ function AppContent() {
             <Route path="/introduction" element={<IntroductionPage />} />
             <Route path="/checkout" element={<CheckOut />} />
             <Route path="/careers" element={<CarrersPage />} />
-
+            <Route path="/blog" element={<BlogPage />} />
           </Routes>
         </Suspense>
       </main>
