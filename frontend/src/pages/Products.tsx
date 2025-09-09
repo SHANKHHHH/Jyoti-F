@@ -536,9 +536,8 @@ const ProductsPage: React.FC = () => {
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
   // New state for sort order: "asc" | "desc" | null (null means no sort by price)
   const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc" | null>(null);
-  // State for hover image modal
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const [hoveredImagePosition, setHoveredImagePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  // State for image modal
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
     // Reset price sort order when filter changes
@@ -616,16 +615,11 @@ const ProductsPage: React.FC = () => {
 
   // Hover handlers for image modal
   const handleImageHover = (imageSrc: string, event: React.MouseEvent) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setHoveredImage(imageSrc);
-    setHoveredImagePosition({
-      x: rect.left + rect.width / 2,
-      y: rect.top - 10,
-    });
+    setSelectedImage(imageSrc);
   };
 
   const handleImageLeave = () => {
-    setHoveredImage(null);
+    setSelectedImage(null);
   };
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -821,20 +815,16 @@ const ProductsPage: React.FC = () => {
       </div>
 
       {/* Hover Image Modal */}
-      {hoveredImage && (
+      {selectedImage && (
         <div
-          className="fixed z-50 pointer-events-none"
-          style={{
-            left: hoveredImagePosition.x,
-            top: hoveredImagePosition.y,
-            transform: "translateX(-50%)",
-          }}
+          className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={() => setSelectedImage(null)}
         >
-          <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-2">
+          <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-lg max-h-[80vh] overflow-auto">
             <img
-              src={hoveredImage}
-              alt="Hovered Product"
-              className="w-64 h-64 object-cover rounded"
+              src={selectedImage}
+              alt="Selected Product"
+              className="w-full h-auto object-contain rounded"
             />
           </div>
         </div>
