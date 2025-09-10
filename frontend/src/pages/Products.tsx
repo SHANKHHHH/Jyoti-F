@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
@@ -528,6 +528,53 @@ export const products: Product[] = [
   },
 ];
 
+// ImageCarousel component
+const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Pause carousel on hover (desktop) or touch (mobile)
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    let interval: number | null = null;
+    if (!isPaused) {
+      interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [images.length, isPaused]);
+
+  return (
+    <div
+      className="relative w-full h-auto"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
+      <img
+        src={images[currentIndex]}
+        alt={`Image ${currentIndex + 1}`}
+        className="w-full h-auto object-contain rounded"
+      />
+      {/* Dots indicator */}
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+        {images.map((_, idx) => (
+          <div
+            key={idx}
+            className={`w-2 h-2 rounded-full ${
+              idx === currentIndex ? "bg-green-600" : "bg-white/60"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const ProductsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -537,7 +584,7 @@ const ProductsPage: React.FC = () => {
   // New state for sort order: "asc" | "desc" | null (null means no sort by price)
   const [priceSortOrder, setPriceSortOrder] = useState<"asc" | "desc" | null>(null);
   // State for image modal
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string[] | null>(null);
   const handleFilterChange = (type: "all" | "bio" | "airon") => {
     setFilter(type);
     // Reset price sort order when filter changes
@@ -613,13 +660,9 @@ const ProductsPage: React.FC = () => {
     navigate("/cart");
   };
 
-  // Hover handlers for image modal
-  const handleImageHover = (imageSrc: string, event: React.MouseEvent) => {
-    setSelectedImage(imageSrc);
-  };
-
-  const handleImageLeave = () => {
-    setSelectedImage(null);
+  // Click handler for image modal
+  const handleImageClick = (images: string[]) => {
+    setSelectedImage(images);
   };
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -723,8 +766,7 @@ const ProductsPage: React.FC = () => {
                     maxHeight: "233.61px",
                     objectFit: "cover",
                   }}
-                  onMouseEnter={(e) => handleImageHover(product.image[imageIndexes[product.id] ?? 0], e)}
-                  onMouseLeave={handleImageLeave}
+                  onClick={() => handleImageClick(product.image)}
                 />
                 {/* Right Arrow */}
                 {product.image.length > 1 && (
@@ -814,18 +856,23 @@ const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hover Image Modal */}
+      {/* Click Image Modal */}
       {selectedImage && (
         <div
           className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50"
           onClick={() => setSelectedImage(null)}
         >
           <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-lg max-h-[80vh] overflow-auto">
-            <img
-              src={selectedImage}
-              alt="Selected Product"
-              className="w-full h-auto object-contain rounded"
-            />
+            {/* Carousel for multiple images */}
+            {Array.isArray(selectedImage) ? (
+              <ImageCarousel images={selectedImage} />
+            ) : (
+              <img
+                src={selectedImage}
+                alt="Selected Product"
+                className="w-full h-auto object-contain rounded"
+              />
+            )}
           </div>
         </div>
       )}
