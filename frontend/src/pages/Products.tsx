@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Star } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 
@@ -578,6 +578,8 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 const ProductsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search') || '';
   // Filter state: all | bio | airon
   const [filter, setFilter] = useState<"all" | "bio" | "airon">("all");
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
@@ -603,6 +605,23 @@ const ProductsPage: React.FC = () => {
 
   // Filter products according to selected filter
   const filteredProducts = products.filter((product) => {
+    // Search filter
+    if (searchTerm) {
+      const lowerSearchTerms = searchTerm.toLowerCase().split(/\s+/).filter(Boolean);
+      const nameLower = product.name.toLowerCase();
+      const descriptionsLower = product.descriptions.map(desc => desc.toLowerCase());
+
+      // Check if all search terms are present in either name or any description
+      const allTermsMatch = lowerSearchTerms.every(term => {
+        if (nameLower.includes(term)) return true;
+        return descriptionsLower.some(desc => desc.includes(term));
+      });
+
+      if (!allTermsMatch) {
+        return false;
+      }
+    }
+
     if (filter === "bio") {
       return (
         product.name.toLowerCase().includes("bio loo") ||
@@ -667,6 +686,13 @@ const ProductsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Search results header */}
+        {searchTerm && (
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-bold text-gray-800">Search results for: "{searchTerm}"</h2>
+          </div>
+        )}
+
         {/* Filter UI replaced by logos */}
         <div className="mb-6 flex gap-6 justify-center items-center">
           {/* All filter: text */}
@@ -850,7 +876,7 @@ const ProductsPage: React.FC = () => {
           ))}
           {filteredProducts.length === 0 && (
             <p className="text-center text-gray-500 col-span-full">
-              No products found for selected filter.
+              {searchTerm ? `No products found for "${searchTerm}".` : "No products found for selected filter."}
             </p>
           )}
         </div>

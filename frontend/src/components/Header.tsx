@@ -11,16 +11,30 @@ import { useAuth } from '../contexts/AuthContext';
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
-  const { cart } = useCart();
-  const { isAuthenticated, signOut } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const trendingSuggestions = ["toilet", "fan", "hand wash", "urinal", "shower cabin", "air cooler", "mist fan", "patio heater"];
+  const navigate = useNavigate();
+  const { cart } = useCart();
+  const { isAuthenticated, signOut } = useAuth();
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredSuggestions(trendingSuggestions);
+    } else {
+      const filtered = trendingSuggestions.filter(suggestion =>
+        suggestion.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    }
+  }, [searchTerm]);
 
   const handleNavClick = (anchor: string) => {
     if (anchor.startsWith('/')) {
@@ -72,21 +86,45 @@ const Header = () => {
         {/* Desktop Search & Nav - This is all your original code */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
           {/* Search */}
-          <form
-            onSubmit={handleSearchSubmit}
-            className={`relative flex items-center rounded-full px-4 py-2 w-64 lg:w-80 transition-colors ${
-              scrolled ? 'bg-gray-100' : 'bg-white/90'
-            }`}
-          >
-            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
-            <input
-              type="text"
-              placeholder="Search for products"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
-            />
-          </form>
+          <form
+            onSubmit={handleSearchSubmit}
+            className={`relative flex items-center rounded-full px-4 py-2 w-64 lg:w-80 transition-colors ${
+              scrolled ? 'bg-gray-100' : 'bg-white/90'
+            }`}
+          >
+            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
+            <input
+              type="text"
+              placeholder="Search for products"
+              value={searchTerm}
+              onChange={e => {
+                setSearchTerm(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 100)}
+              className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
+            />
+            {showDropdown && filteredSuggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto mt-1">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSearchTerm(suggestion);
+                      setShowDropdown(false);
+                      navigate(`/products?search=${encodeURIComponent(suggestion)}`);
+                    }}
+                    onMouseDown={(e) => e.preventDefault()}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+          </form>
           
           {/* Nav */}
           <nav className="flex items-center space-x-4 lg:space-x-6">
@@ -182,21 +220,46 @@ const Header = () => {
             scrolled ? 'bg-white' : 'bg-black/80 backdrop-blur-sm'
           }`}
         >
-          <form
-            onSubmit={handleSearchSubmit}
-            className={`flex items-center rounded-full px-4 py-2 w-full mb-3 transition-colors ${
-              scrolled ? 'bg-gray-100' : 'bg-white/90'
-            }`}
-          >
-            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
-            <input
-              type="text"
-              placeholder="Search for products"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
-            />
-          </form>
+          <form
+            onSubmit={handleSearchSubmit}
+            className={`relative flex items-center rounded-full px-4 py-2 w-full mb-3 transition-colors ${
+              scrolled ? 'bg-gray-100' : 'bg-white/90'
+            }`}
+          >
+            <Search className="text-gray-500 mr-3 cursor-pointer" size={18} onClick={handleSearchSubmit} />
+            <input
+              type="text"
+              placeholder="Search for products"
+              value={searchTerm}
+              onChange={e => {
+                setSearchTerm(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 100)}
+              className="bg-transparent outline-none w-full text-sm text-gray-800 placeholder-gray-500"
+            />
+            {showDropdown && filteredSuggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto mt-1">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSearchTerm(suggestion);
+                      setShowDropdown(false);
+                      setIsOpen(false);
+                      navigate(`/products?search=${encodeURIComponent(suggestion)}`);
+                    }}
+                    onMouseDown={(e) => e.preventDefault()}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
+          </form>
           {/* HOME */}
           <button
             onClick={() => handleNavClick('/home')}
