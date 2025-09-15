@@ -8,6 +8,8 @@ import AirOnTowerAC1 from "../assets/_AIRONTOWERAC(2).png";
 import AirOnTowerAC2 from "../assets/_AIRONTOWERAC.png";
 import AirOnTowerCooler from "../assets/_AIRONTOWERAIRCOOLER.png";
 import AirCooler from "../assets/AIRCOOLER.png";
+import Air from "../assets/air cooler.png"
+import half from "../assets/AIR ON - Portable AC (1 (1).5 Ton).png"
 // import AironWater from "../assets/AIRONWATER.png";
 import MISTFANS1 from "../assets/MISTFANS1.png";
 import ductac from "../assets/ductac.png";
@@ -27,7 +29,10 @@ import BioLooMainsIWC1 from "../assets/biolooportabletoiletmainsconnectioniwc-1.
 
 import Handicap from "../assets/BIO LOO handicap Toilet.png";
 import Handicap1 from "../assets/Bio Loo - Handicap Toilet.png"
-
+import b1 from "../assets/4 urinal 1.png"
+import b2 from "../assets/4 urinal 2.png"
+import h1 from "../assets/BIO hand wash Single tap 1.png"
+import h2 from "../assets/Bio Loo - Hand wash 2 TAP.png"
 import BioLooPrimeFemale1 from "../assets/BIOLOOPRIMELUXURYFEMALECONTAINER(1).png";
 import BioLooPrimeFemale2 from "../assets/BIOLOOPRIMELUXURYFEMALECONTAINER(2).png";
 import BioLooPrimeFemale3 from "../assets/BIOLOOPRIMELUXURYFEMALECONTAINER(3).png";
@@ -294,34 +299,34 @@ export const products: Product[] = [
     ],
     image: [Fire],
   },
-  {
-    id: "5695b7b7-6cf4-4fb1-9405-92a11e4312e5",
-    name: "Bio Loo Portable Toilet Mains Connection WC",
-    price: 2000,
-    rating: 4.5,
-    reviews: 23,
-    category: "Containers",
-    description: "SPECIFICATIONS",
-    descriptions: [
-      "Ideal for site offices, storage, or housing staff.",
-      "Heavy-duty steel construction for security.",
-      "Weather resistant design for any climate.",
-      "Easy to transport and install at your site.",
-      "Spacious interior with customizable layout.",
-      "Low maintenance, long service life.",
-      "Lockable doors & windows for added safety.",
-      "Perfect for construction, events, or remote locations.",
-    ],
-    image: [
-      BioLooPrimeMale1,
-      BioLooPrimeMale2,
-      BioLooPrimeMale3,
-      BioLooPrimeMale4,
-      BioLooPrimeMale5,
-      BioLooPrimeMale6,
-      BioLooPrimeMale7,
-    ],
-  },
+  // {
+  //   id: "5695b7b7-6cf4-4fb1-9405-92a11e4312e5",
+  //   name: "Bio Loo Portable Toilet Mains Connection WC",
+  //   price: 2000,
+  //   rating: 4.5,
+  //   reviews: 23,
+  //   category: "Containers",
+  //   description: "SPECIFICATIONS",
+  //   descriptions: [
+  //     "Ideal for site offices, storage, or housing staff.",
+  //     "Heavy-duty steel construction for security.",
+  //     "Weather resistant design for any climate.",
+  //     "Easy to transport and install at your site.",
+  //     "Spacious interior with customizable layout.",
+  //     "Low maintenance, long service life.",
+  //     "Lockable doors & windows for added safety.",
+  //     "Perfect for construction, events, or remote locations.",
+  //   ],
+  //   image: [
+  //     BioLooPrimeMale1,
+  //     BioLooPrimeMale2,
+  //     BioLooPrimeMale3,
+  //     BioLooPrimeMale4,
+  //     BioLooPrimeMale5,
+  //     BioLooPrimeMale6,
+  //     BioLooPrimeMale7,
+  //   ],
+  // },
   {
     id: "5983234c-8de9-448b-a685-f98749ab2dff",
     name: "PM Container",
@@ -403,7 +408,7 @@ export const products: Product[] = [
       "Dimensions: 3.6 ft x 2.2 ft x 5.3 ft (height).",
       "Weight: Gross weight approximately 55 kg.",
     ],
-    image: [AirCooler],
+    image: [Air],
   },
   {
     id: "b1acc26b-678a-416f-95bd-4fa941d7d7e1",
@@ -525,6 +530,100 @@ export const products: Product[] = [
       "Value Added: Cost-effective, hygienic, and environmentally sustainable sanitation solution.",
     ],
     image: [MensUrinals],
+  },
+  {
+    id: "new-bio-handwash-2tap",
+    name: "Bio Handwash 2-Tap",
+    price: 1500,
+    rating: 4.5,
+    reviews: 23,
+    category: "Bio Loo",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "Dual-tap design for simultaneous use and efficient handwashing.",
+      "Sensor-operated for touch-free hygiene and water conservation.",
+      "Eco-friendly with low water consumption and biodegradable soap options.",
+      "Suitable for high-traffic areas like events, public spaces, and commercial venues.",
+      "Durable stainless steel construction for long-lasting performance.",
+      "Includes integrated soap dispenser and towel holder for convenience.",
+    ],
+    image: [h2], // Placeholder image
+  },
+  {
+    id: "new-bio-mensurinals4x1",
+    name: "Bio Men's Urinals 4x1",
+    price: 4500,
+    rating: 4.5,
+    reviews: 23,
+    category: "Bio Loo",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "4-in-1 urinal system designed for multiple users simultaneously.",
+      "Bio-digester technology for effective odor control and waste management.",
+      "Water-saving design to minimize resource usage.",
+      "Durable and easy-to-clean materials for maintenance efficiency.",
+      "Suitable for outdoor events, construction sites, and public facilities.",
+      "Includes partitions for privacy and user comfort.",
+    ],
+    image: [b1], // Placeholder image
+  },
+  {
+    id: "new-bio-mensurinals3x1",
+    name: "Bio Men's Urinals 4x2",
+    price: 4500,
+    rating: 4.5,
+    reviews: 23,
+    category: "Bio Loo",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "4-in-2 urinal system designed for multiple users simultaneously.",
+      "Bio-digester technology for effective odor control and waste management.",
+      "Water-saving design to minimize resource usage.",
+      "Durable and easy-to-clean materials for maintenance efficiency.",
+      "Suitable for outdoor events, construction sites, and public facilities.",
+      "Includes partitions for privacy and user comfort.",
+    ],
+    image: [b2], // Placeholder image
+  },
+  {
+    id: "new-bio-handwash-1tap",
+    name: "Bio Handwash 1-Tap",
+    price: 750,
+    rating: 4.5,
+    reviews: 23,
+    category: "Bio Loo",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "Single-tap handwash station for compact and efficient use.",
+      "Automatic sensor activation for hygienic, touch-free operation.",
+      "Hygienic design with antimicrobial coating to prevent bacterial growth.",
+      "Low water consumption for eco-friendly and cost-effective usage.",
+      "Compact and portable design suitable for various locations.",
+      "Includes integrated soap dispenser for added convenience.",
+    ],
+    image: [h1], // Placeholder image
+  },
+  {
+    id: "new-portable-ac-2ton",
+    name: "Portable Air Conditioners (2 Ton)",
+    price: 4500,
+    rating: 4.5,
+    reviews: 23,
+    category: "Airon",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "2 Ton",
+      "For Rooms : up to 12 ft x 20 ft => 240 sqft",
+      "100 % Copper Condenser Coil",
+      "Single rotary fixed speed compressor",
+      "Power Consumption: 2300 W",
+      "Hydrophilic Golden Fins,",
+      "Anti Bacterial Silver Coating,",
+      "Anti-freeze Thermostat",
+      "Product Weight => 47 Kg",
+      "Refrigerant: R410A",
+    ],
+    image: [half], // Placeholder image
   },
 ];
 
