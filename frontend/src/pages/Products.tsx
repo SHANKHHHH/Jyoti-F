@@ -8,15 +8,16 @@ import AirOnTowerAC1 from "../assets/_AIRONTOWERAC(2).png";
 import AirOnTowerAC2 from "../assets/_AIRONTOWERAC.png";
 import AirOnTowerCooler from "../assets/_AIRONTOWERAIRCOOLER.png";
 import AirCooler from "../assets/AIRCOOLER.png";
-import Air from "../assets/air cooler.png"
-import half from "../assets/AIR ON - Portable AC (1 (1).5 Ton).png"
+import Air from "../assets/air cooler.png";
+import half from "../assets/AIR ON - Portable AC (1 (1).5 Ton).png";
 // import AironWater from "../assets/AIRONWATER.png";
 import MISTFANS1 from "../assets/MISTFANS1.png";
 import ductac from "../assets/ductac.png";
 import Pedestal from "../assets/Pedestal Fan.png";
+import handi from "../assets/BIO LOO handicap Toilet (1).png";
 
 import MensUrinals from "../assets/3MENSURINELS.png";
-import Hi from "../assets/Bio Loo - Hi Tech Wc With Health Faucet.png"
+import Hi from "../assets/Bio Loo - Hi Tech Wc With Health Faucet.png";
 
 import BioLogo from "../assets/Bio Loo - Logo.png";
 import AirLogo from "../assets/AIR ON Logo.png"
@@ -624,6 +625,25 @@ export const products: Product[] = [
       "Refrigerant: R410A",
     ],
     image: [half], // Placeholder image
+  },
+  {
+    id: "new-bio-handicap-toilet",
+    name: "Bio Loo Handicap Toilet",
+    price: 5000,
+    rating: 4.5,
+    reviews: 23,
+    category: "Bio Loo",
+    description: "SPECIFICATIONS",
+    descriptions: [
+      "Accessible design specifically for wheelchair users with reinforced structure.",
+      "Equipped with automatic sliding doors and ramps for seamless entry.",
+      "Features adjustable height western commode and sturdy grab bars for safety.",
+      "Low-noise ventilation system for user comfort and privacy.",
+      "Portable and quick to install in events, public spaces, or temporary sites.",
+      "Eco-friendly with bio-digester technology and biodegradable components.",
+      "Includes integrated handwash basin and tissue dispenser for hygiene.",
+    ],
+    image: [handi], // Handicap toilet image
   },
 ];
 
