@@ -568,24 +568,24 @@ export const products: Product[] = [
     ],
     image: [b1], // Placeholder image
   },
-  {
-    id: "new-bio-mensurinals3x1",
-    name: "Bio Men's Urinals 4x2",
-    price: 4500,
-    rating: 4.5,
-    reviews: 23,
-    category: "Bio Loo",
-    description: "SPECIFICATIONS",
-    descriptions: [
-      "4-in-2 urinal system designed for multiple users simultaneously.",
-      "Bio-digester technology for effective odor control and waste management.",
-      "Water-saving design to minimize resource usage.",
-      "Durable and easy-to-clean materials for maintenance efficiency.",
-      "Suitable for outdoor events, construction sites, and public facilities.",
-      "Includes partitions for privacy and user comfort.",
-    ],
-    image: [b2], // Placeholder image
-  },
+  // {
+  //   id: "new-bio-mensurinals3x1",
+  //   name: "Bio Men's Urinals 4x2",
+  //   price: 4500,
+  //   rating: 4.5,
+  //   reviews: 23,
+  //   category: "Bio Loo",
+  //   description: "SPECIFICATIONS",
+  //   descriptions: [
+  //     "4-in-2 urinal system designed for multiple users simultaneously.",
+  //     "Bio-digester technology for effective odor control and waste management.",
+  //     "Water-saving design to minimize resource usage.",
+  //     "Durable and easy-to-clean materials for maintenance efficiency.",
+  //     "Suitable for outdoor events, construction sites, and public facilities.",
+  //     "Includes partitions for privacy and user comfort.",
+  //   ],
+  //   image: [b2], // Placeholder image
+  // },
   {
     id: "new-bio-handwash-1tap",
     name: "Bio Handwash 1-Tap",
@@ -626,25 +626,25 @@ export const products: Product[] = [
     ],
     image: [half], // Placeholder image
   },
-  {
-    id: "new-bio-handicap-toilet",
-    name: "Bio Loo Handicap Toilet",
-    price: 5000,
-    rating: 4.5,
-    reviews: 23,
-    category: "Bio Loo",
-    description: "SPECIFICATIONS",
-    descriptions: [
-      "Accessible design specifically for wheelchair users with reinforced structure.",
-      "Equipped with automatic sliding doors and ramps for seamless entry.",
-      "Features adjustable height western commode and sturdy grab bars for safety.",
-      "Low-noise ventilation system for user comfort and privacy.",
-      "Portable and quick to install in events, public spaces, or temporary sites.",
-      "Eco-friendly with bio-digester technology and biodegradable components.",
-      "Includes integrated handwash basin and tissue dispenser for hygiene.",
-    ],
-    image: [handi], // Handicap toilet image
-  },
+  // {
+  //   id: "new-bio-handicap-toilet",
+  //   name: "Bio Loo Handicap Toilet",
+  //   price: 5000,
+  //   rating: 4.5,
+  //   reviews: 23,
+  //   category: "Bio Loo",
+  //   description: "SPECIFICATIONS",
+  //   descriptions: [
+  //     "Accessible design specifically for wheelchair users with reinforced structure.",
+  //     "Equipped with automatic sliding doors and ramps for seamless entry.",
+  //     "Features adjustable height western commode and sturdy grab bars for safety.",
+  //     "Low-noise ventilation system for user comfort and privacy.",
+  //     "Portable and quick to install in events, public spaces, or temporary sites.",
+  //     "Eco-friendly with bio-digester technology and biodegradable components.",
+  //     "Includes integrated handwash basin and tissue dispenser for hygiene.",
+  //   ],
+  //   image: [handi], // Handicap toilet image
+  // },
 ];
 
 // ImageCarousel component
