@@ -15,6 +15,7 @@ import MISTFANS1 from "../assets/MISTFANS1.png";
 import ductac from "../assets/ductac.png";
 import Pedestal from "../assets/Pedestal Fan.png";
 import handi from "../assets/BIO LOO handicap Toilet (1).png";
+import Che from "../assets/WhatsApp Image 2025-09-17 at 13.16.00_3c461e9a.jpg";
 
 import MensUrinals from "../assets/3MENSURINELS.png";
 import Hi from "../assets/Bio Loo - Hi Tech Wc With Health Faucet.png";
@@ -447,7 +448,7 @@ export const products: Product[] = [
       "Application: Suitable for outdoor events, construction sites, highways, and remote areas.",
       "Build Quality: Durable, hygienic, and low-maintenance sanitation solution with modern comfort.",
     ],
-    image: [BioLooMainsIWC1],
+    image: [Che],
   },
   {
     id: "cbe9b5e9-87e5-49db-b208-f88a92385cfc",
