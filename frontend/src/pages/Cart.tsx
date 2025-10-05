@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
 import { Trash2 } from "lucide-react";
 import { products } from "./Products";
+import { API_ENDPOINTS } from '../config/api';
 
 const actionLabel = {
   buy: "",
@@ -101,7 +102,7 @@ const CartPage: React.FC = () => {
       // Fallback to backend API
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
       
-      const response = await fetch("/api/cart/checkout", {
+      const response = await fetch(API_ENDPOINTS.cart.checkout, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

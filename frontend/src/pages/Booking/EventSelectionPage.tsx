@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { API_ENDPOINTS } from '../../config/api';
 
 // Import event images
 import vvipImage from "../../assets/VVIP.jpg";
@@ -41,7 +42,7 @@ const EventSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("/api/events");
+        const response = await fetch(API_ENDPOINTS.events.list);
         const data = await response.json();
 
         if (data.success && Array.isArray(data.events)) {

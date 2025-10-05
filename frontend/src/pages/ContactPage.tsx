@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_ENDPOINTS } from '../config/api';
 
 const initialState = {
   name: "",
@@ -87,7 +88,7 @@ const ContactPage: React.FC = () => {
         endTime: form.endTime,
       };
 
-      const response = await fetch('/api/contact/submit', {
+      const response = await fetch(API_ENDPOINTS.contact.submit, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from '../../config/api';
 
 // Define the structure for a service option
 interface ServiceData {
@@ -45,7 +46,7 @@ const ServiceSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("/api/services");
+        const response = await fetch(API_ENDPOINTS.services.list);
         const data = await response.json();
 
         if (data.success) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS } from '../../config/api';
 
 // Import your service images
 import luxuryToiletsImage from '../../assets/LuxuryToilets.jpg';
@@ -196,7 +197,7 @@ const CheckOut: React.FC = () => {
     
     try {
       // Send data to the backend API endpoint
-      const response = await fetch('/api/contact/submit', {
+      const response = await fetch(API_ENDPOINTS.contact.submit, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
