@@ -41,7 +41,7 @@ const EventSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("https://jyothi-enterprises-4q1d.onrender.com/api/events");
+        const response = await fetch("/api/events");
         const data = await response.json();
 
         if (data.success && Array.isArray(data.events)) {

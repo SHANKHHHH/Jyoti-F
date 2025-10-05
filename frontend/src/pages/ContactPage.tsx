@@ -27,13 +27,72 @@ const ContactPage: React.FC = () => {
     setSubmissionStatus({ loading: true, error: '', success: '' });
 
     try {
-      // Send data to the backend API endpoint
-      const response = await fetch('https://jyothi-enterprises-4q1d.onrender.com/api/contact/submit', {
+      // Try Formspree first
+      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowkb';
+      
+      if (formspreeEndpoint && !formspreeEndpoint.includes('xpwnqkqk')) {
+        // Use Formspree
+        const formData = new FormData();
+        formData.append('_subject', 'New Quote Request from Website');
+        formData.append('_replyto', form.email);
+        formData.append('_cc', 'sales@jyotientp.com');
+        formData.append('name', form.name);
+        formData.append('email', form.email);
+        formData.append('mobile', form.mobile);
+        formData.append('gst', form.gst);
+        formData.append('type', form.type);
+        formData.append('pax', form.pax);
+        formData.append('event', form.event);
+        formData.append('startDate', form.startDate);
+        formData.append('endDate', form.endDate);
+        formData.append('startTime', form.startTime);
+        formData.append('endTime', form.endTime);
+        formData.append('form_type', 'contact_form');
+
+        try {
+          const response = await fetch(formspreeEndpoint, {
+            method: 'POST',
+            body: formData,
+            redirect: 'manual' // Prevent automatic redirect
+          });
+
+          // Check if the response is successful (200-299) or a redirect (300-399)
+          if (response.status >= 200 && response.status < 400) {
+            setSubmissionStatus({
+              loading: false,
+              error: '',
+              success: 'Contact form submitted successfully! We will contact you soon.'
+            });
+            setForm(initialState);
+            return;
+          }
+        } catch (error) {
+          // If Formspree fails, we'll fall through to backend API
+          console.log('Formspree submission failed, trying backend API...');
+        }
+      }
+
+      // Fallback to backend API - map frontend fields to backend expected fields
+      const backendFormData = {
+        name: form.name,
+        email: form.email,
+        mobileNumber: form.mobile,
+        gstNumber: form.gst,
+        productType: form.type,
+        eventType: form.event,
+        paxCount: form.pax,
+        startDate: form.startDate,
+        endDate: form.endDate,
+        startTime: form.startTime,
+        endTime: form.endTime,
+      };
+
+      const response = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(backendFormData),
       });
 
       const result = await response.json();
@@ -45,7 +104,7 @@ const ContactPage: React.FC = () => {
       setSubmissionStatus({
         loading: false,
         error: '',
-        success: 'Quote request submitted successfully!'
+        success: 'Contact form submitted successfully! We will contact you soon.'
       });
 
       console.log('API Response:', result);
@@ -88,7 +147,7 @@ const ContactPage: React.FC = () => {
             <div>
               <div className="font-semibold text-gray-500">MAIL</div>
               <div>
-                <a href="mailto:info@jyotientp.com" className="text-orange-700 hover:underline">info@jyotientp.com</a>
+                <a href="mailto:sales@jyotientp.com" className="text-orange-700 hover:underline">sales@jyotientp.com</a>
               </div>
               <div>
                 <a href="mailto:sales@jyotientp.com" className="text-orange-700 hover:underline">sales@jyotientp.com</a>

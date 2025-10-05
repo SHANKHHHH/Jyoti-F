@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
-import { Trash2, Edit2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { products } from "./Products";
 
 const actionLabel = {
@@ -27,6 +27,9 @@ const CartPage: React.FC = () => {
   // Show up to 3 recommendations
   const recommendations = availableRecommendations.slice(0, 3);
 
+  // Calculate total amount
+  const totalAmount = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+
   useEffect(() => {
     const details = localStorage.getItem("userDetails");
     if (details) {
@@ -44,6 +47,7 @@ const CartPage: React.FC = () => {
     navigate("/products");
   };
 
+
   const handleProceedToCheckout = async () => {
     if (!savedDetails) {
       alert("Please save your details before proceeding to checkout.");
@@ -51,22 +55,81 @@ const CartPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch("https://jyothi-enterprises-4q1d.onrender.com/api/cart/checkout", {
+      // Try Formspree first
+      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowkb';
+      
+      if (formspreeEndpoint && !formspreeEndpoint.includes('xpwnqkqk')) {
+        // Use Formspree for checkout
+        const formData = new FormData();
+        formData.append('_subject', 'New Order from Shopping Cart');
+        formData.append('_replyto', savedDetails.email);
+        formData.append('_cc', 'sales@jyotientp.com');
+        formData.append('customer_name', savedDetails.name);
+        formData.append('customer_email', savedDetails.email);
+        formData.append('customer_phone', savedDetails.phone);
+        formData.append('form_type', 'cart_checkout');
+        formData.append('total_amount', totalAmount.toString());
+        formData.append('item_count', cart.length.toString());
+        
+        // Add items as JSON
+        const itemsJson = JSON.stringify(cart.map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          total: item.price * item.quantity
+        })));
+        formData.append('items', itemsJson);
+
+        try {
+          const response = await fetch(formspreeEndpoint, {
+            method: 'POST',
+            body: formData,
+            redirect: 'manual' // Prevent automatic redirect
+          });
+
+          // Check if the response is successful (200-299) or a redirect (300-399)
+          if (response.status >= 200 && response.status < 400) {
+            alert("Order submitted successfully! We will contact you soon.");
+            return;
+          }
+        } catch (error) {
+          // If Formspree fails, we'll fall through to backend API
+          console.log('Formspree submission failed, trying backend API...');
+        }
+      }
+
+      // Fallback to backend API
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+      
+      const response = await fetch("/api/cart/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "session-id": sessionId,
         },
         body: JSON.stringify({
-          items: cart,
-          user: savedDetails,
+          customerName: savedDetails.name,
+          customerEmail: savedDetails.email,
+          customerPhone: savedDetails.phone,
+          items: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+            description: item.discount || ''
+          }))
         }),
       });
 
       if (response.ok) {
-        alert("Checkout successful!");
-        // Optionally clear cart or navigate to a confirmation page
+        const result = await response.json();
+        alert("Checkout successful! We will contact you soon.");
+        console.log("Checkout result:", result);
       } else {
-        alert("Checkout failed. Please try again.");
+        const errorData = await response.json();
+        console.error("Checkout failed:", errorData);
+        alert(`Checkout failed: ${errorData.message || 'Please try again.'}`);
       }
     } catch (error) {
       console.error("Error during checkout:", error);
@@ -87,7 +150,7 @@ const CartPage: React.FC = () => {
           {cart.length === 0 ? (
             <div className="py-14 text-center text-gray-500">Your cart is empty.</div>
           ) : (
-            cart.map((item, idx) => (
+            cart.map((item) => (
               <div key={item.id + item.action} className="flex items-start mb-6 border-b pb-5">
                 <img src={item.image} alt={item.name} className="w-24 h-32 rounded-lg object-cover border" />
                 <div className="ml-4 flex-1">

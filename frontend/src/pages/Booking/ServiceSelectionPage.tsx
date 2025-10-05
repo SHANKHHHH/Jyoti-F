@@ -45,9 +45,7 @@ const ServiceSelectionPage: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch(
-          "https://jyothi-enterprises-4q1d.onrender.com/api/services"
-        );
+        const response = await fetch("/api/services");
         const data = await response.json();
 
         if (data.success) {

@@ -1,8 +1,5 @@
-if (!import.meta.env.VITE_BACKEND_URL) {
-  throw new Error("VITE_BACKEND_URL is not defined in .env");
-}
-
-const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth`;
+// Use proxy configuration from vite.config.ts
+const API_URL = '/api/auth';
 
 export const signup = async (
   email: string,

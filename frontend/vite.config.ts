@@ -10,9 +10,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://jyothi-enterprises-4q1d.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: true,
+        secure: false,
         configure: (proxy, options) => {
           proxy.on('error', (err, req, res) => {
             console.log('proxy error', err);
