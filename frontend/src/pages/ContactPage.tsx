@@ -29,7 +29,7 @@ const ContactPage: React.FC = () => {
 
     try {
       // Try Formspree first
-      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowkb';
+      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowbb';
       
       if (formspreeEndpoint && !formspreeEndpoint.includes('xpwnqkqk')) {
         // Use Formspree

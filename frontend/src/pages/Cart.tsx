@@ -57,7 +57,7 @@ const CartPage: React.FC = () => {
 
     try {
       // Try Formspree first
-      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowkb';
+      const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xjkaowbb';
       
       if (formspreeEndpoint && !formspreeEndpoint.includes('xpwnqkqk')) {
         // Use Formspree for checkout
@@ -72,14 +72,11 @@ const CartPage: React.FC = () => {
         formData.append('total_amount', totalAmount.toString());
         formData.append('item_count', cart.length.toString());
         
-        // Add items as JSON
-        const itemsJson = JSON.stringify(cart.map(item => ({
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          total: item.price * item.quantity
-        })));
-        formData.append('items', itemsJson);
+        // Format items nicely for email
+        const formattedItems = cart.map((item, index) => 
+          `${index + 1}. ${item.name} (Qty: ${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}`
+        ).join('\n');
+        formData.append('items', formattedItems);
 
         try {
           const response = await fetch(formspreeEndpoint, {
